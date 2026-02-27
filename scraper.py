@@ -208,7 +208,8 @@ def count_pages(html):
 
 # ── Fetch di tutte le pagine ────────────────────────────────────────────────
 def fetch_all_pages(session):
-    all_raw = []  # lista di dict con raw texts
+    all_raw = []
+    all_opponents = set()  # per debug: tutti gli avversari trovati
     page = 0
 
     while True:
@@ -219,44 +220,40 @@ def fetch_all_pages(session):
         r.raise_for_status()
         html = r.text
 
-        # Prima pagina: conta il totale
         if page == 0:
             total = count_pages(html)
             if total:
                 print(f"[scraper] Trovate {total} pagine totali")
-            # DEBUG temporaneo: mostra HTML pagina autenticata
-            soup_dbg = BeautifulSoup(html, "html.parser")
-            table_dbg = soup_dbg.find("table", class_="gridtable")
-            if table_dbg:
-                rows_dbg = table_dbg.find_all("tr")
-                print(f"[debug] Tabella trovata, righe: {len(rows_dbg)}")
-                for i, row in enumerate(rows_dbg[:5]):
-                    cells = row.find_all(["td","th"])
-                    print(f"[debug] Riga {i} ({len(cells)} celle): {[c.get_text(strip=True)[:40] for c in cells]}")
-            else:
-                print("[debug] Nessuna tabella class=gridtable — tabelle presenti:")
-                for t in soup_dbg.find_all("table"):
-                    print(f"  <table class='{t.get('class')}' id='{t.get('id')}'>")
-                print(f"[debug] HTML grezzo (primi 1200 char):\n{html[:1200]}")
+
+        # Raccogli tutti gli avversari (senza filtro) per debug
+        soup = BeautifulSoup(html, "html.parser")
+        table = soup.find("table", class_="gridtable")
+        if table:
+            for row in table.find_all("tr"):
+                cells = row.find_all("td")
+                if len(cells) == 9 and SCORE_RE.match(cells[3].get_text(strip=True)):
+                    ns = cells[1].get_text(strip=True)
+                    eo = cells[2].get_text(strip=True)
+                    all_opponents.add(ns)
+                    all_opponents.add(eo)
 
         matches = parse_page(html)
-        if not matches:
-            print(f"[scraper] Nessuna partita a pagina {page}, stop.")
-            break
-
         all_raw.extend(matches)
-        print(f"[scraper] → {len(matches)} righe estratte (totale: {len(all_raw)})")
+        print(f"[scraper] → {len(matches)} partite vs {PLAYER2} (totale: {len(all_raw)})")
 
         if not has_next_page(html):
             print("[scraper] Ultima pagina raggiunta.")
             break
 
         page += 1
-
-        # Safety limit
         if page > 500:
             print("[scraper] Limite pagine raggiunto (500)")
             break
+
+    # Stampa tutti gli avversari trovati per debug
+    print(f"\n[debug] Tutti i giocatori trovati nelle partite:")
+    for opp in sorted(all_opponents):
+        print(f"  '{opp}'")
 
     return all_raw
 
