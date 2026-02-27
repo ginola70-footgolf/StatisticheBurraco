@@ -95,105 +95,107 @@ def login(session, username, password):
     return False
 
 # ── Parsing pagina ──────────────────────────────────────────────────────────
-_debug_printed = False  # stampa debug solo alla prima pagina
+# Struttura reale della tabella:
+#   Riga intestazione : <th> Info | Squadra NordSud | Squadra EstOvest | Punteggio NS(VP) | Punteggio EO(VP) | ...
+#   Riga data         : 1 cella  "ITALIANO2026-02-27 14:43:58"  (oppure "ENGLISH2026-...")
+#   Riga partita      : 9 celle  "ITALIANO Crea Tavolo" | giocatore1 | giocatore2 | "2425(19)" | "940(0)" | ...
+
+DATE_RE  = re.compile(r'(\d{4}-\d{2}-\d{2})')          # 2026-02-27
+SCORE_RE = re.compile(r'^(\d+)\s*\(')                   # "2425(19)" → 2425
 
 def parse_page(html):
-    """Estrae le partite dall'HTML di una pagina di cronologia."""
-    global _debug_printed
+    """Estrae le partite dall'HTML della pagina di cronologia."""
     soup = BeautifulSoup(html, "html.parser")
     matches = []
 
-    # Cerca tabelle o righe con i dati delle partite
-    rows = soup.select("table tr") or soup.select(".match") or soup.select(".game")
+    table = soup.find("table", class_="gridtable")
+    if not table:
+        table = soup.find("table")
+    if not table:
+        return matches
 
-    # ── DEBUG: stampa le prime 3 righe grezze alla prima esecuzione ──
-    if not _debug_printed:
-        _debug_printed = True
-        print("\n[DEBUG] Struttura HTML — prime 3 righe della tabella:")
-        for i, row in enumerate(rows[:3]):
-            cells = row.find_all(["td", "th"])
-            texts = [c.get_text(strip=True) for c in cells]
-            print(f"  Riga {i}: {texts}")
-        # Stampa anche un pezzo dell'HTML grezzo per vedere la struttura
-        print("\n[DEBUG] HTML grezzo prima tabella (primi 800 char):")
-        first_table = soup.find("table")
-        if first_table:
-            print(str(first_table)[:800])
-        else:
-            print("  Nessuna <table> trovata! Tag presenti:")
-            print(" ", [t.name for t in soup.find_all()][:30])
-        print("[DEBUG] fine\n")
-    # ── fine DEBUG ────────────────────────────────────────────────────
+    rows = table.find_all("tr")
+    current_date = "sconosciuta"
 
     for row in rows:
         cells = row.find_all(["td", "th"])
-        if len(cells) < 4:
-            continue
-
         texts = [c.get_text(strip=True) for c in cells]
 
-        # Salta intestazioni
-        if any(h in texts[0].lower() for h in ["data", "date", "giorno"]):
+        if not texts:
             continue
 
-        # Prova a estrarre: data, giocatori, punteggi
-        match = extract_match(texts, row)
-        if match:
-            matches.append(match)
+        # ── Riga intestazione: salta ──────────────────────────────────
+        if cells[0].name == "th":
+            continue
+
+        # ── Riga data: 1 cella con "ITALIANO2026-02-27 14:43:58" ─────
+        if len(cells) == 1:
+            m = DATE_RE.search(texts[0])
+            if m:
+                try:
+                    dt = datetime.strptime(m.group(1), "%Y-%m-%d")
+                    current_date = dt.strftime("%d/%m/%Y")
+                except ValueError:
+                    pass
+            continue
+
+        # ── Riga partita: 9 celle ─────────────────────────────────────
+        # [0] "ITALIANO Crea Tavolo"
+        # [1] Squadra NordSud  (giocatore / coppia)
+        # [2] Squadra EstOvest (giocatore / coppia)
+        # [3] Punteggio NordSud  es. "2425(19)"
+        # [4] Punteggio EstOvest es. "940(0)"
+        # [5] Punti Giocatore
+        # [6] Punti Club
+        # [7] Punti Lega
+        # [8] Terminata per
+        if len(texts) < 5:
+            continue
+
+        # Salta righe pubblicitarie/sistema (non hanno punteggio valido)
+        if not SCORE_RE.match(texts[3]) and not SCORE_RE.match(texts[4]):
+            continue
+
+        squad_ns = texts[1]   # NordSud
+        squad_eo = texts[2]   # EstOvest
+
+        score_ns_m = SCORE_RE.match(texts[3])
+        score_eo_m = SCORE_RE.match(texts[4])
+
+        if not score_ns_m or not score_eo_m:
+            continue
+
+        score_ns = int(score_ns_m.group(1))
+        score_eo = int(score_eo_m.group(1))
+
+        # Determina chi è P1 (ginola700) e chi è P2 (zappaclaud)
+        # I nomi possono essere in squad_ns o squad_eo
+        p1_in_ns = PLAYER1.lower() in squad_ns.lower()
+        p1_in_eo = PLAYER1.lower() in squad_eo.lower()
+
+        if p1_in_ns:
+            ginola_score = score_ns
+            zappa_score  = score_eo
+        elif p1_in_eo:
+            ginola_score = score_eo
+            zappa_score  = score_ns
+        else:
+            # ginola non trovato in questa riga, prendi NS come ginola per default
+            ginola_score = score_ns
+            zappa_score  = score_eo
+
+        winner = PLAYER1 if ginola_score > zappa_score else PLAYER2
+
+        matches.append({
+            "data":         current_date,
+            "ginola_score": ginola_score,
+            "zappa_score":  zappa_score,
+            "winner":       winner,
+            "squad_ns":     squad_ns,
+            "squad_eo":     squad_eo,
+        })
 
     return matches
-
-def extract_match(texts, row):
-    """Estrae un singolo match dai testi di una riga."""
-    # Cerca pattern di punteggio (numeri)
-    scores = [t for t in texts if re.match(r'^\d+$', t)]
-
-    # Cerca una data
-    date_pattern = re.compile(r'\d{1,2}[/\-\.]\d{1,2}[/\-\.]\d{2,4}')
-    date_str = None
-    for t in texts:
-        m = date_pattern.search(t)
-        if m:
-            date_str = m.group()
-            break
-
-    # Cerca i nomi dei giocatori
-    p1_found = any(PLAYER1.lower() in t.lower() for t in texts)
-    p2_found = any(PLAYER2.lower() in t.lower() for t in texts)
-
-    if not date_str and not scores:
-        return None
-
-    # Costruisci oggetto match con i dati disponibili
-    match = {"raw": texts}
-
-    if date_str:
-        # Normalizza data in GG/MM/AAAA
-        try:
-            for fmt in ("%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y",
-                        "%d/%m/%y",  "%d-%m-%y",  "%d.%m.%y"):
-                try:
-                    dt = datetime.strptime(date_str, fmt)
-                    match["data"] = dt.strftime("%d/%m/%Y")
-                    break
-                except ValueError:
-                    continue
-        except Exception:
-            match["data"] = date_str
-
-    if len(scores) >= 2:
-        # Assumiamo che il primo punteggio sia di P1 e il secondo di P2
-        # (potrebbe richiedere aggiustamenti in base alla struttura reale)
-        try:
-            s1 = int(scores[0])
-            s2 = int(scores[1])
-            match["ginola_score"] = s1
-            match["zappa_score"]  = s2
-            match["winner"] = PLAYER1 if s1 > s2 else PLAYER2
-        except Exception:
-            pass
-
-    return match
 
 def has_next_page(html):
     """Controlla se esiste una pagina successiva."""
