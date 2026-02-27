@@ -1,352 +1,286 @@
 #!/usr/bin/env python3
 """
-Burraco Scraper
-Legge credenziali da credentials.txt, fa login su burracoepinelle.com
-e scarica tutta la cronologia partite, salvando partite.json
+scraper.py — Burraco Pinelle scraper
+Gira su GitHub Actions, genera docs/partite.json
 """
 
 import requests
 import json
 import re
+import sys
 import os
-from datetime import datetime, timezone
 from bs4 import BeautifulSoup
+from datetime import datetime
+from collections import defaultdict
+import urllib3
 
-# ── Configurazione ──────────────────────────────────────────────────────────
-BASE_URL   = "https://www.burracoepinelle.com/burrachi_pinelle/index.php"
-LOGIN_URL  = BASE_URL + "?page=login"
-HISTORY_URL= BASE_URL + "?page=match_history_user&user=237071&p={page}"
-CREDS_FILE = "credentials.txt"
-OUTPUT     = "partite.json"
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-PLAYER1 = "ginola700"   # user 237071
-PLAYER2 = "zappaclaud"
+BASE_URL  = "https://www.burracoepinelle.com/burrachi_pinelle"
+LOGIN_URL = f"{BASE_URL}/index.php?page=login"
+HIST_URL  = f"{BASE_URL}/index.php?page=match_history_user&user=237071&p="
+USER      = os.environ.get("BURRACO_USER", "ginola700")
+PASSWD    = os.environ.get("BURRACO_PASS", "federico")
+PLAYER1   = "ginola700"
+PLAYER2   = "zappaclaud"
+OUT_FILE  = "docs/partite.json"
 
-# ── Lettura credenziali ─────────────────────────────────────────────────────
-def read_credentials():
-    if not os.path.exists(CREDS_FILE):
-        raise FileNotFoundError(
-            f"File '{CREDS_FILE}' non trovato.\n"
-            "Crea il file con:\n  username=tuousername\n  password=tuapassword"
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "it-IT,it;q=0.9",
+}
+
+MESI = {
+    "gennaio":1,"febbraio":2,"marzo":3,"aprile":4,"maggio":5,"giugno":6,
+    "luglio":7,"agosto":8,"settembre":9,"ottobre":10,"novembre":11,"dicembre":12,
+    "gen":1,"feb":2,"mar":3,"apr":4,"mag":5,"giu":6,
+    "lug":7,"ago":8,"set":9,"ott":10,"nov":11,"dic":12,
+}
+
+# ─── LOGIN ────────────────────────────────────────────────────────────────────
+
+def login(s):
+    print("Logging in...")
+    try:
+        r0 = s.get(LOGIN_URL, verify=False, timeout=20, headers=HEADERS)
+        soup = BeautifulSoup(r0.text, "html.parser")
+        form = soup.find("form")
+        payload = {}
+        action = LOGIN_URL
+        if form:
+            for inp in form.find_all("input"):
+                n = inp.get("name", "")
+                v = inp.get("value", "")
+                if not n:
+                    continue
+                nl = n.lower()
+                if any(k in nl for k in ("user","login","nome","nick")):
+                    payload[n] = USER
+                elif any(k in nl for k in ("pass","pwd","secret")):
+                    payload[n] = PASSWD
+                else:
+                    payload[n] = v
+            a = form.get("action") or ""
+            if a:
+                action = a if a.startswith("http") else BASE_URL + "/" + a.lstrip("/")
+        else:
+            payload = {"username": USER, "password": PASSWD, "submit": "entra"}
+
+        s.post(
+            action, data=payload, verify=False, timeout=20,
+            headers={**HEADERS, "Referer": LOGIN_URL,
+                     "Content-Type": "application/x-www-form-urlencoded"},
+            allow_redirects=True,
         )
-    creds = {}
-    with open(CREDS_FILE) as f:
-        for line in f:
-            line = line.strip()
-            if "=" in line and not line.startswith("#"):
-                k, v = line.split("=", 1)
-                creds[k.strip().lower()] = v.strip()
-    if "username" not in creds or "password" not in creds:
-        raise ValueError("credentials.txt deve contenere 'username=...' e 'password=...'")
-    return creds["username"], creds["password"]
-
-# ── Login ───────────────────────────────────────────────────────────────────
-def login(session, username, password):
-    print(f"[login] Tentativo login come '{username}'...")
-
-    # Carica la pagina di login per ottenere i cookie
-    r = session.get(LOGIN_URL)
-    r.raise_for_status()
-
-    # Il form corretto è quello con action='login' e campi nick/pwd
-    post_url = "https://www.burracoepinelle.com/burrachi_pinelle/index.php?page=login"
-    form_data = {
-        "action":  "login",
-        "poll":    "-1",
-        "vip":     "-1",
-        "gift_id": "-1",
-        "nick":    username,
-        "pwd":     password,
-    }
-
-    resp = session.post(post_url, data=form_data, allow_redirects=True)
-    resp.raise_for_status()
-
-    print(f"[login] Status: {resp.status_code}, URL finale: {resp.url}")
-
-    if "logout" in resp.text.lower() or username.lower() in resp.text.lower():
-        print("[login] ✓ Login riuscito")
+        print("Login attempted.")
         return True
+    except Exception as e:
+        print(f"Login error: {e}")
+        return False
 
-    print("[login] ✗ Login fallito — verifica username e password nei segreti GitHub")
+# ─── PARSING ──────────────────────────────────────────────────────────────────
+
+def estrai_data(testi):
+    for t in testi:
+        m = re.search(r'\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})\b', t)
+        if m:
+            g, mo, a = m.groups()
+            return f"{a}-{mo.zfill(2)}-{g.zfill(2)}", f"{g.zfill(2)}/{mo.zfill(2)}/{a}"
+        m = re.search(r'\b(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})\b', t)
+        if m:
+            a, mo, g = m.groups()
+            return f"{a}-{mo.zfill(2)}-{g.zfill(2)}", f"{g.zfill(2)}/{mo.zfill(2)}/{a}"
+        m = re.search(r'\b(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})\b', t)
+        if m:
+            g, mese_s, a = m.groups()
+            mo = MESI.get(mese_s.lower())
+            if mo:
+                return f"{a}-{str(mo).zfill(2)}-{g.zfill(2)}", f"{g.zfill(2)}/{str(mo).zfill(2)}/{a}"
+    return None, None
+
+def is_score(val):
+    val = val.strip()
+    if re.match(r'^-?\d{1,6}$', val):
+        return -3000 <= int(val) <= 9999
     return False
 
-# ── Parsing pagina ──────────────────────────────────────────────────────────
-# Struttura reale della tabella:
-#   Riga intestazione : <th> Info | Squadra NordSud | Squadra EstOvest | Punteggio NS(VP) | Punteggio EO(VP) | ...
-#   Riga data         : 1 cella  "ITALIANO2026-02-27 14:43:58"  (oppure "ENGLISH2026-...")
-#   Riga partita      : 9 celle  "ITALIANO Crea Tavolo" | giocatore1 | giocatore2 | "2425(19)" | "940(0)" | ...
+def parse_row(row):
+    tds   = row.find_all(["td","th"])
+    testi = [td.get_text(" ", strip=True) for td in tds]
+    raw   = " | ".join(testi)
+    if "ITALIANO" not in raw.upper():
+        return None
 
-DATE_RE  = re.compile(r'(\d{4}-\d{2}-\d{2})')          # 2026-02-27
-SCORE_RE = re.compile(r'^(\d+)\s*\(')                   # "2425(19)" → 2425
+    data_iso, data_fmt = estrai_data(testi)
+    punteggi, nomi = [], []
 
-def parse_page(html):
-    """Estrae le partite dall'HTML della pagina di cronologia."""
-    soup = BeautifulSoup(html, "html.parser")
-    matches = []
+    SKIP_WORDS = ("italiano","classico","pinelle","burraco","data","gioco",
+                  "tipo","risultato","partita","n°","num","id","stato","vs",
+                  "vinci","perdi","pareggio")
 
-    table = soup.find("table", class_="gridtable")
-    if not table:
-        table = soup.find("table")
-    if not table:
-        return matches
+    for t in testi:
+        ts = t.strip()
+        if is_score(ts):
+            punteggi.append(int(ts))
+        elif (len(ts) > 2
+              and not re.match(r'^\d+$', ts)
+              and not re.match(r'^\d{1,2}[\/\-]\d', ts)
+              and ts not in ("-", "|")):
+            if not any(k in ts.lower() for k in SKIP_WORDS):
+                nomi.append(ts)
 
-    rows = table.find_all("tr")
-    current_date = "sconosciuta"
-
-    for row in rows:
-        cells = row.find_all(["td", "th"])
-        texts = [c.get_text(strip=True) for c in cells]
-
-        if not texts:
-            continue
-
-        # ── Riga intestazione: salta ──────────────────────────────────
-        if cells[0].name == "th":
-            continue
-
-        # ── Riga data: 2 celle con "ITALIANO2026-02-27..." ───────────
-        if len(cells) == 2:
-            m = DATE_RE.search(texts[0])
-            if m:
-                try:
-                    dt = datetime.strptime(m.group(1), "%Y-%m-%d")
-                    current_date = dt.strftime("%d/%m/%Y")
-                except ValueError:
-                    pass
-            continue
-
-        # ── Riga partita: 9 celle ─────────────────────────────────────
-        # [0] "ITALIANO Crea Tavolo"
-        # [1] Squadra NordSud  (giocatore / coppia)
-        # [2] Squadra EstOvest (giocatore / coppia)
-        # [3] Punteggio NordSud  es. "2425(19)"
-        # [4] Punteggio EstOvest es. "940(0)"
-        # [5] Punti Giocatore
-        # [6] Punti Club
-        # [7] Punti Lega
-        # [8] Terminata per
-        if len(texts) < 5:
-            continue
-
-        # Salta righe pubblicitarie/sistema (non hanno punteggio valido)
-        if not SCORE_RE.match(texts[3]) and not SCORE_RE.match(texts[4]):
-            continue
-
-        squad_ns = texts[1]
-        squad_eo = texts[2]
-
-        score_ns_m = SCORE_RE.match(texts[3])
-        score_eo_m = SCORE_RE.match(texts[4])
-        if not score_ns_m or not score_eo_m:
-            continue
-
-        score_ns = int(score_ns_m.group(1))
-        score_eo = int(score_eo_m.group(1))
-
-        # Cerca zappaclaud come avversario (in uno dei due campi)
-        # ginola700 è l'utente loggato — può essere NS o EO
-        p2_in_ns = PLAYER2.lower() in squad_ns.lower()
-        p2_in_eo = PLAYER2.lower() in squad_eo.lower()
-
-        # Tieni solo partite in cui compare zappaclaud
-        if not p2_in_ns and not p2_in_eo:
-            continue
-
-        # Se zappaclaud è in EO → ginola è in NS
-        if p2_in_eo:
-            ginola_score = score_ns
-            zappa_score  = score_eo
-        else:
-            ginola_score = score_eo
-            zappa_score  = score_ns
-
-        winner = PLAYER1 if ginola_score > zappa_score else PLAYER2
-
-        matches.append({
-            "data":         current_date,
-            "ginola_score": ginola_score,
-            "zappa_score":  zappa_score,
-            "winner":       winner,
-        })
-
-    return matches
-
-def has_next_page(html):
-    """Controlla se esiste una pagina successiva."""
-    soup = BeautifulSoup(html, "html.parser")
-
-    # Cerca link "avanti", "next", "»" ecc.
-    next_patterns = ["next", "successiv", "avanti", "»", ">"]
-    for a in soup.find_all("a"):
-        text = a.get_text(strip=True).lower()
-        href = a.get("href", "")
-        if any(p in text for p in next_patterns) or ("p=" in href and "match_history" in href):
-            # Controlla che non sia disabilitato
-            if "disabled" not in a.get("class", []):
-                if any(p in text for p in ["next", "successiv", "avanti", "»"]):
-                    return True
-
-    # Alternativa: guarda se ci sono riferimenti alla pagina successiva nell'URL
-    page_links = soup.select("a[href*='p=']")
-    return len(page_links) > 1
-
-def count_pages(html):
-    """Tenta di contare il numero totale di pagine."""
-    soup = BeautifulSoup(html, "html.parser")
-    page_links = soup.select("a[href*='p=']")
-    pages = set()
-    for a in page_links:
-        href = a.get("href", "")
-        m = re.search(r'p=(\d+)', href)
-        if m:
-            pages.add(int(m.group(1)))
-    return max(pages) + 1 if pages else None
-
-# ── Fetch di tutte le pagine ────────────────────────────────────────────────
-def fetch_all_pages(session):
-    all_raw = []  # lista di dict con raw texts
-    page = 0
-
-    while True:
-        url = HISTORY_URL.format(page=page)
-        print(f"[scraper] Pagina {page}: {url}")
-
-        r = session.get(url)
-        r.raise_for_status()
-        html = r.text
-
-        # Prima pagina: conta il totale
-        if page == 0:
-            total = count_pages(html)
-            if total:
-                print(f"[scraper] Trovate {total} pagine totali")
-            # DEBUG temporaneo: mostra HTML pagina autenticata
-            soup_dbg = BeautifulSoup(html, "html.parser")
-            table_dbg = soup_dbg.find("table", class_="gridtable")
-            if table_dbg:
-                rows_dbg = table_dbg.find_all("tr")
-                print(f"[debug] Tabella trovata, righe: {len(rows_dbg)}")
-                for i, row in enumerate(rows_dbg[:5]):
-                    cells = row.find_all(["td","th"])
-                    print(f"[debug] Riga {i} ({len(cells)} celle): {[c.get_text(strip=True)[:40] for c in cells]}")
-            else:
-                print("[debug] Nessuna tabella class=gridtable — tabelle presenti:")
-                for t in soup_dbg.find_all("table"):
-                    print(f"  <table class='{t.get('class')}' id='{t.get('id')}'>")
-                print(f"[debug] HTML grezzo (primi 1200 char):\n{html[:1200]}")
-
-        matches = parse_page(html)
-        if not matches:
-            print(f"[scraper] Nessuna partita a pagina {page}, stop.")
-            break
-
-        all_raw.extend(matches)
-        print(f"[scraper] → {len(matches)} righe estratte (totale: {len(all_raw)})")
-
-        if not has_next_page(html):
-            print("[scraper] Ultima pagina raggiunta.")
-            break
-
-        page += 1
-
-        # Safety limit
-        if page > 500:
-            print("[scraper] Limite pagine raggiunto (500)")
-            break
-
-    return all_raw
-
-# ── Aggregazione dati ────────────────────────────────────────────────────────
-def aggregate(raw_matches):
-    """Aggrega le partite per giorno e calcola i totali."""
-    by_day = {}
-
-    for m in raw_matches:
-        data = m.get("data", "sconosciuta")
-        if data not in by_day:
-            by_day[data] = {"data": data, "ginola_vittorie": 0, "zappa_vittorie": 0, "partite": []}
-
-        if "winner" in m:
-            if m["winner"] == PLAYER1:
-                by_day[data]["ginola_vittorie"] += 1
-            else:
-                by_day[data]["zappa_vittorie"] += 1
-
-        if "ginola_score" in m and "zappa_score" in m:
-            by_day[data]["partite"].append({
-                "ginola_score": m["ginola_score"],
-                "zappa_score":  m["zappa_score"],
-                "winner":       m.get("winner", "")
-            })
-
-    # Ordina per data decrescente
-    def parse_date(d):
-        try:
-            return datetime.strptime(d, "%d/%m/%Y")
-        except Exception:
-            return datetime.min
-
-    per_giorno = sorted(by_day.values(), key=lambda x: parse_date(x["data"]), reverse=True)
-
-    for g in per_giorno:
-        g["n_partite"] = len(g["partite"]) or (g["ginola_vittorie"] + g["zappa_vittorie"])
-
-    # Totali
-    tot_g = sum(g["ginola_vittorie"] for g in per_giorno)
-    tot_z = sum(g["zappa_vittorie"] for g in per_giorno)
-    tot   = tot_g + tot_z
+    if len(punteggi) < 2 or not data_fmt:
+        return None
 
     return {
-        "aggiornato": datetime.now(timezone.utc).isoformat(),
+        "data_iso": data_iso,
+        "data":     data_fmt,
+        "nome1":    nomi[0] if len(nomi) > 0 else "",
+        "nome2":    nomi[1] if len(nomi) > 1 else "",
+        "score1":   punteggi[0],
+        "score2":   punteggi[1],
+        "raw":      testi,
+    }
+
+# ─── SCRAPING ─────────────────────────────────────────────────────────────────
+
+def scrape_page(s, page):
+    url = HIST_URL + str(page)
+    try:
+        r = s.get(url, verify=False, timeout=20, headers=HEADERS)
+        if r.status_code != 200:
+            return [], False
+        soup = BeautifulSoup(r.text, "html.parser")
+        if page == 0:
+            os.makedirs("docs", exist_ok=True)
+            with open("docs/debug_p0.html", "w", encoding="utf-8") as f:
+                f.write(r.text)
+        rows = []
+        for table in soup.find_all("table"):
+            for tr in table.find_all("tr"):
+                p = parse_row(tr)
+                if p:
+                    rows.append(p)
+        has_next = bool(re.search(rf'p={page+1}', r.text))
+        return rows, has_next
+    except Exception as e:
+        print(f"  Error p={page}: {e}")
+        return [], False
+
+# ─── STATISTICHE ──────────────────────────────────────────────────────────────
+
+def identifica(r):
+    n1 = (r.get("nome1") or "").lower()
+    n2 = (r.get("nome2") or "").lower()
+    p1, p2 = PLAYER1.lower(), PLAYER2.lower()
+    if p1 in n1 and p2 in n2:
+        return r["score1"], r["score2"]
+    if p2 in n1 and p1 in n2:
+        return r["score2"], r["score1"]
+    # solo il giocatore loggato visibile
+    if p1 in n1:
+        return r["score1"], r["score2"]
+    if p1 in n2:
+        return r["score2"], r["score1"]
+    return None
+
+def calcola(raw_rows):
+    per_giorno = defaultdict(lambda: {
+        "data_fmt":"", "ginola_v":0, "zappa_v":0,
+        "ginola_pts":0, "zappa_pts":0, "partite":[]
+    })
+    tot_g = tot_z = 0
+
+    for r in raw_rows:
+        res = identifica(r)
+        if res is None:
+            continue
+        gs, zs = res
+        iso     = r.get("data_iso") or "0000-00-00"
+        fmt     = r.get("data")     or "—"
+        winner  = PLAYER1 if gs > zs else PLAYER2
+        if gs > zs: tot_g += 1
+        else:        tot_z += 1
+        d = per_giorno[iso]
+        d["data_fmt"]    = fmt
+        d["ginola_pts"] += gs
+        d["zappa_pts"]  += zs
+        d["partite"].append({"ginola_score": gs, "zappa_score": zs, "winner": winner})
+        if winner == PLAYER1: d["ginola_v"] += 1
+        else:                  d["zappa_v"]  += 1
+
+    giorni = []
+    for iso, d in sorted(per_giorno.items(), key=lambda x: x[0], reverse=True):
+        giorni.append({
+            "data":              d["data_fmt"],
+            "data_iso":          iso,
+            "ginola_vittorie":   d["ginola_v"],
+            "zappa_vittorie":    d["zappa_v"],
+            "ginola_pts_totale": d["ginola_pts"],
+            "zappa_pts_totale":  d["zappa_pts"],
+            "n_partite":         len(d["partite"]),
+            "partite":           d["partite"],
+        })
+
+    tot = tot_g + tot_z
+    return {
+        "aggiornato": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "giocatori":  [PLAYER1, PLAYER2],
         "totali": {
             "ginola_vittorie": tot_g,
             "zappa_vittorie":  tot_z,
             "totale_partite":  tot,
-            "giorni_giocati":  len(per_giorno),
-            "ginola_pct":      round(tot_g / tot * 100, 1) if tot else 0,
-            "zappa_pct":       round(tot_z / tot * 100, 1) if tot else 0,
+            "giorni_giocati":  len(giorni),
+            "ginola_pct":      round(tot_g/tot*100, 1) if tot else 0,
+            "zappa_pct":       round(tot_z/tot*100, 1) if tot else 0,
         },
-        "per_giorno": per_giorno,
+        "per_giorno": giorni,
     }
 
-# ── Main ─────────────────────────────────────────────────────────────────────
+# ─── MAIN ─────────────────────────────────────────────────────────────────────
+
 def main():
-    print("=" * 55)
-    print("  Burraco Scraper")
-    print("=" * 55)
+    print("=" * 50)
+    print("Burraco Pinelle Scraper")
+    print(f"{PLAYER1}  vs  {PLAYER2}")
+    print("=" * 50)
 
-    username, password = read_credentials()
+    os.makedirs("docs", exist_ok=True)
+    s = requests.Session()
+    login(s)
 
-    # Silenzia i warning SSL (il sito ha certificato non verificabile)
-    import urllib3
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    print("\nDownloading match history...")
+    all_rows = []
+    for page in range(100):
+        rows, has_next = scrape_page(s, page)
+        print(f"  p={page}: {len(rows)} rows")
+        all_rows.extend(rows)
+        if not has_next:
+            print(f"  Last page: {page}")
+            break
 
-    session = requests.Session()
-    session.verify = False  # disabilita verifica certificato SSL
-    session.headers.update({
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                      "AppleWebKit/537.36 Chrome/120 Safari/537.36",
-        "Accept-Language": "it-IT,it;q=0.9",
-    })
+    print(f"\nTotal raw rows: {len(all_rows)}")
+    dati = calcola(all_rows)
+    t = dati["totali"]
 
-    login(session, username, password)
+    print(f"\nRESULTS:")
+    print(f"  {PLAYER1}: {t['ginola_vittorie']} wins ({t['ginola_pct']}%)")
+    print(f"  {PLAYER2}: {t['zappa_vittorie']} wins ({t['zappa_pct']}%)")
+    print(f"  Total matches: {t['totale_partite']}")
+    print(f"  Days played:   {t['giorni_giocati']}")
 
-    raw_matches = fetch_all_pages(session)
-    print(f"\n[aggregazione] Totale righe grezze: {len(raw_matches)}")
+    with open(OUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(dati, f, ensure_ascii=False, indent=2)
+    print(f"\nSaved: {OUT_FILE}")
 
-    data = aggregate(raw_matches)
-
-    # Salva
-    with open(OUTPUT, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-    print(f"\n[✓] Salvato '{OUTPUT}'")
-    print(f"    Partite totali : {data['totali']['totale_partite']}")
-    print(f"    {PLAYER1:12s}: {data['totali']['ginola_vittorie']} vittorie")
-    print(f"    {PLAYER2:12s}: {data['totali']['zappa_vittorie']} vittorie")
-    print(f"    Giorni giocati : {data['totali']['giorni_giocati']}")
+    if t["totale_partite"] == 0:
+        print("\nWARNING: 0 matches found. Check docs/debug_p0.html")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
