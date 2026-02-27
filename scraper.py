@@ -95,14 +95,35 @@ def login(session, username, password):
     return False
 
 # ── Parsing pagina ──────────────────────────────────────────────────────────
+_debug_printed = False  # stampa debug solo alla prima pagina
+
 def parse_page(html):
     """Estrae le partite dall'HTML di una pagina di cronologia."""
+    global _debug_printed
     soup = BeautifulSoup(html, "html.parser")
     matches = []
 
     # Cerca tabelle o righe con i dati delle partite
-    # Adatta i selettori in base alla struttura reale della pagina
     rows = soup.select("table tr") or soup.select(".match") or soup.select(".game")
+
+    # ── DEBUG: stampa le prime 3 righe grezze alla prima esecuzione ──
+    if not _debug_printed:
+        _debug_printed = True
+        print("\n[DEBUG] Struttura HTML — prime 3 righe della tabella:")
+        for i, row in enumerate(rows[:3]):
+            cells = row.find_all(["td", "th"])
+            texts = [c.get_text(strip=True) for c in cells]
+            print(f"  Riga {i}: {texts}")
+        # Stampa anche un pezzo dell'HTML grezzo per vedere la struttura
+        print("\n[DEBUG] HTML grezzo prima tabella (primi 800 char):")
+        first_table = soup.find("table")
+        if first_table:
+            print(str(first_table)[:800])
+        else:
+            print("  Nessuna <table> trovata! Tag presenti:")
+            print(" ", [t.name for t in soup.find_all()][:30])
+        print("[DEBUG] fine\n")
+    # ── fine DEBUG ────────────────────────────────────────────────────
 
     for row in rows:
         cells = row.find_all(["td", "th"])
