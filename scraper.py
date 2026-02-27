@@ -307,7 +307,12 @@ def main():
 
     username, password = read_credentials()
 
+    # Silenzia i warning SSL (il sito ha certificato non verificabile)
+    import urllib3
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
     session = requests.Session()
+    session.verify = False  # disabilita verifica certificato SSL
     session.headers.update({
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                       "AppleWebKit/537.36 Chrome/120 Safari/537.36",
