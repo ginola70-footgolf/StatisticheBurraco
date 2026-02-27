@@ -1,1 +1,430 @@
-
+{
+  "aggiornato": "2026-02-27T15:24:49.113092+00:00",
+  "giocatori": [
+    "ginola700",
+    "zappaclaud"
+  ],
+  "totali": {
+    "ginola_vittorie": 45,
+    "zappa_vittorie": 36,
+    "totale_partite": 81,
+    "giorni_giocati": 1,
+    "ginola_pct": 55.6,
+    "zappa_pct": 44.4
+  },
+  "per_giorno": [
+    {
+      "data": "sconosciuta",
+      "ginola_vittorie": 45,
+      "zappa_vittorie": 36,
+      "partite": [
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 0,
+          "zappa_score": 0,
+          "winner": "zappaclaud"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        },
+        {
+          "ginola_score": 3,
+          "zappa_score": 0,
+          "winner": "ginola700"
+        }
+      ],
+      "n_partite": 81
+    }
+  ]
+}
