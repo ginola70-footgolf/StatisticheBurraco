@@ -105,8 +105,8 @@ def parse_page(html):
         if cells[0].name == "th":
             continue
 
-        # ── Riga data: 1 cella con "ITALIANO2026-02-27 14:43:58" ─────
-        if len(cells) == 1:
+        # ── Riga data: 2 celle con "ITALIANO2026-02-27..." ───────────
+        if len(cells) == 2:
             m = DATE_RE.search(texts[0])
             if m:
                 try:
@@ -133,33 +133,33 @@ def parse_page(html):
         if not SCORE_RE.match(texts[3]) and not SCORE_RE.match(texts[4]):
             continue
 
-        squad_ns = texts[1]   # NordSud
-        squad_eo = texts[2]   # EstOvest
+        squad_ns = texts[1]
+        squad_eo = texts[2]
 
         score_ns_m = SCORE_RE.match(texts[3])
         score_eo_m = SCORE_RE.match(texts[4])
-
         if not score_ns_m or not score_eo_m:
             continue
 
         score_ns = int(score_ns_m.group(1))
         score_eo = int(score_eo_m.group(1))
 
-        # Determina chi è P1 (ginola700) e chi è P2 (zappaclaud)
-        # I nomi possono essere in squad_ns o squad_eo
-        p1_in_ns = PLAYER1.lower() in squad_ns.lower()
-        p1_in_eo = PLAYER1.lower() in squad_eo.lower()
+        # Cerca zappaclaud come avversario (in uno dei due campi)
+        # ginola700 è l'utente loggato — può essere NS o EO
+        p2_in_ns = PLAYER2.lower() in squad_ns.lower()
+        p2_in_eo = PLAYER2.lower() in squad_eo.lower()
 
-        if p1_in_ns:
+        # Tieni solo partite in cui compare zappaclaud
+        if not p2_in_ns and not p2_in_eo:
+            continue
+
+        # Se zappaclaud è in EO → ginola è in NS
+        if p2_in_eo:
             ginola_score = score_ns
             zappa_score  = score_eo
-        elif p1_in_eo:
+        else:
             ginola_score = score_eo
             zappa_score  = score_ns
-        else:
-            # ginola non trovato in questa riga, prendi NS come ginola per default
-            ginola_score = score_ns
-            zappa_score  = score_eo
 
         winner = PLAYER1 if ginola_score > zappa_score else PLAYER2
 
@@ -168,8 +168,6 @@ def parse_page(html):
             "ginola_score": ginola_score,
             "zappa_score":  zappa_score,
             "winner":       winner,
-            "squad_ns":     squad_ns,
-            "squad_eo":     squad_eo,
         })
 
     return matches
