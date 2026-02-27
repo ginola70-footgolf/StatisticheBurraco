@@ -2,8 +2,8 @@ name: Aggiorna Partite
 
 on:
   # Esecuzione automatica ogni ora
-  schedule:
-    - cron: '0 * * * *'
+  # schedule:
+    # - cron: '0 * * * *'
 
   # Esecuzione manuale dal pulsante su GitHub Actions
   workflow_dispatch:
