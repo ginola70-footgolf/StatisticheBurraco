@@ -1,1 +1,55 @@
+name: Aggiorna Partite
 
+on:
+  # Esecuzione automatica ogni ora
+  schedule:
+    - cron: '0 * * * *'
+
+  # Esecuzione manuale dal pulsante su GitHub Actions
+  workflow_dispatch:
+
+  # Esecuzione tramite push (opzionale, rimuovere se non serve)
+  # push:
+  #   branches: [main]
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # necessario per il commit
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installa dipendenze
+        run: pip install requests beautifulsoup4
+
+      - name: Crea credentials.txt dai segreti
+        env:
+          BURRACO_USER: ${{ secrets.BURRACO_USER }}
+          BURRACO_PASS: ${{ secrets.BURRACO_PASS }}
+        run: |
+          echo "username=${BURRACO_USER}" > credentials.txt
+          echo "password=${BURRACO_PASS}" >> credentials.txt
+
+      - name: Esegui scraper
+        run: python scraper.py
+
+      - name: Rimuovi credentials.txt
+        if: always()
+        run: rm -f credentials.txt
+
+      - name: Commit e push partite.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add partite.json
+          # Commit solo se ci sono modifiche
+          git diff --staged --quiet || git commit -m "🃏 Aggiorna partite $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
