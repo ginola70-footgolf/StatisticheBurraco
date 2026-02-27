@@ -44,54 +44,59 @@ def read_credentials():
 def login(session, username, password):
     print(f"[login] Tentativo login come '{username}'...")
 
-    # Prima carica la pagina di login per eventuali token/cookie
+    # Carica la pagina di login
     r = session.get(LOGIN_URL)
     r.raise_for_status()
-
-    # Analizza il form per trovare i campi nascosti
     soup = BeautifulSoup(r.text, "html.parser")
-    form_data = {"username": username, "password": password}
+
+    # DEBUG: mostra tutti i form e i campi presenti
+    forms = soup.find_all("form")
+    print(f"[login-debug] Form trovati: {len(forms)}")
+    for fi, form in enumerate(forms):
+        print(f"[login-debug] Form {fi}: action='{form.get('action')}' method='{form.get('method')}'")
+        for inp in form.find_all("input"):
+            t = inp.get("type","text")
+            n = inp.get("name","—")
+            v = inp.get("value","")
+            if t != "password":
+                print(f"[login-debug]   <input type='{t}' name='{n}' value='{v}'>")
+            else:
+                print(f"[login-debug]   <input type='password' name='{n}'>")
+
+    # DEBUG: prime 500 lettere della risposta alla pagina login
+    print(f"[login-debug] HTML pagina login (primi 500 char):\n{r.text[:500]}\n")
 
     form = soup.find("form")
+    form_data = {"username": username, "password": password}
+
     if form:
-        for inp in form.find_all("input", type=["hidden", "text", "password"]):
+        for inp in form.find_all("input"):
             name = inp.get("name")
             val  = inp.get("value", "")
-            if name and name not in ("username", "password"):
+            t    = inp.get("type", "text")
+            if name and t not in ("submit",) and name not in ("username", "password"):
                 form_data[name] = val
-        # Cattura anche il nome del campo submit se presente
-        for inp in form.find_all("input", type="submit"):
-            if inp.get("name"):
-                form_data[inp["name"]] = inp.get("value", "login")
 
-    # Determina l'action del form
     action = form.get("action") if form else None
     post_url = (
         requests.compat.urljoin(LOGIN_URL, action)
         if action and not action.startswith("http")
         else (action or LOGIN_URL)
     )
+    print(f"[login-debug] POST verso: {post_url}")
+    print(f"[login-debug] Campi inviati: { {k:v for k,v in form_data.items() if k!='password'} }")
 
     resp = session.post(post_url, data=form_data, allow_redirects=True)
     resp.raise_for_status()
 
-    # Verifica login riuscito cercando segni di autenticazione
+    print(f"[login-debug] Risposta POST — status: {resp.status_code}, url finale: {resp.url}")
+    print(f"[login-debug] Primi 500 char risposta:\n{resp.text[:500]}\n")
+
     if "logout" in resp.text.lower() or username.lower() in resp.text.lower():
         print("[login] ✓ Login riuscito")
         return True
 
-    # Prova alternativa: alcuni siti usano nomi diversi
-    for attempt_data in [
-        {"user": username, "pass": password},
-        {"login": username, "pwd": password},
-        {"nick": username, "password": password},
-    ]:
-        resp2 = session.post(post_url, data=attempt_data, allow_redirects=True)
-        if "logout" in resp2.text.lower() or username.lower() in resp2.text.lower():
-            print("[login] ✓ Login riuscito (tentativo alternativo)")
-            return True
-
-    print("[login] ⚠ Login potrebbe non essere riuscito, continuo comunque...")
+    print("[login] ✗ Login fallito — controlla i campi del form nel debug sopra")
     return False
 
 # ── Parsing pagina ──────────────────────────────────────────────────────────
@@ -241,11 +246,13 @@ def fetch_all_pages(session):
         r.raise_for_status()
         html = r.text
 
-        # Prima pagina: conta il totale se possibile
+        # Prima pagina: conta il totale e mostra debug HTML
         if page == 0:
             total = count_pages(html)
             if total:
                 print(f"[scraper] Trovate {total} pagine totali")
+            # DEBUG: mostra primi 800 char della pagina partite
+            print(f"[scraper-debug] HTML pagina partite (primi 800 char):\n{html[:800]}\n")
 
         matches = parse_page(html)
         if not matches:
