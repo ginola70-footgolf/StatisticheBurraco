@@ -144,6 +144,9 @@ def parse_page(html):
         score_ns = int(score_ns_m.group(1))
         score_eo = int(score_eo_m.group(1))
 
+        # DEBUG: stampa ogni riga partita con i due giocatori
+        print(f"[row] NS='{squad_ns}' EO='{squad_eo}' score={score_ns}-{score_eo}")
+
         # Cerca zappaclaud come avversario (in uno dei due campi)
         # ginola700 è l'utente loggato — può essere NS o EO
         p2_in_ns = PLAYER2.lower() in squad_ns.lower()
