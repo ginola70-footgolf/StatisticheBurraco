@@ -44,59 +44,31 @@ def read_credentials():
 def login(session, username, password):
     print(f"[login] Tentativo login come '{username}'...")
 
-    # Carica la pagina di login
+    # Carica la pagina di login per ottenere i cookie
     r = session.get(LOGIN_URL)
     r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
 
-    # DEBUG: mostra tutti i form e i campi presenti
-    forms = soup.find_all("form")
-    print(f"[login-debug] Form trovati: {len(forms)}")
-    for fi, form in enumerate(forms):
-        print(f"[login-debug] Form {fi}: action='{form.get('action')}' method='{form.get('method')}'")
-        for inp in form.find_all("input"):
-            t = inp.get("type","text")
-            n = inp.get("name","—")
-            v = inp.get("value","")
-            if t != "password":
-                print(f"[login-debug]   <input type='{t}' name='{n}' value='{v}'>")
-            else:
-                print(f"[login-debug]   <input type='password' name='{n}'>")
-
-    # DEBUG: prime 500 lettere della risposta alla pagina login
-    print(f"[login-debug] HTML pagina login (primi 500 char):\n{r.text[:500]}\n")
-
-    form = soup.find("form")
-    form_data = {"username": username, "password": password}
-
-    if form:
-        for inp in form.find_all("input"):
-            name = inp.get("name")
-            val  = inp.get("value", "")
-            t    = inp.get("type", "text")
-            if name and t not in ("submit",) and name not in ("username", "password"):
-                form_data[name] = val
-
-    action = form.get("action") if form else None
-    post_url = (
-        requests.compat.urljoin(LOGIN_URL, action)
-        if action and not action.startswith("http")
-        else (action or LOGIN_URL)
-    )
-    print(f"[login-debug] POST verso: {post_url}")
-    print(f"[login-debug] Campi inviati: { {k:v for k,v in form_data.items() if k!='password'} }")
+    # Il form corretto è quello con action='login' e campi nick/pwd
+    post_url = "https://www.burracoepinelle.com/burrachi_pinelle/index.php?page=login"
+    form_data = {
+        "action":  "login",
+        "poll":    "-1",
+        "vip":     "-1",
+        "gift_id": "-1",
+        "nick":    username,
+        "pwd":     password,
+    }
 
     resp = session.post(post_url, data=form_data, allow_redirects=True)
     resp.raise_for_status()
 
-    print(f"[login-debug] Risposta POST — status: {resp.status_code}, url finale: {resp.url}")
-    print(f"[login-debug] Primi 500 char risposta:\n{resp.text[:500]}\n")
+    print(f"[login] Status: {resp.status_code}, URL finale: {resp.url}")
 
     if "logout" in resp.text.lower() or username.lower() in resp.text.lower():
         print("[login] ✓ Login riuscito")
         return True
 
-    print("[login] ✗ Login fallito — controlla i campi del form nel debug sopra")
+    print("[login] ✗ Login fallito — verifica username e password nei segreti GitHub")
     return False
 
 # ── Parsing pagina ──────────────────────────────────────────────────────────
@@ -246,13 +218,11 @@ def fetch_all_pages(session):
         r.raise_for_status()
         html = r.text
 
-        # Prima pagina: conta il totale e mostra debug HTML
+        # Prima pagina: conta il totale
         if page == 0:
             total = count_pages(html)
             if total:
                 print(f"[scraper] Trovate {total} pagine totali")
-            # DEBUG: mostra primi 800 char della pagina partite
-            print(f"[scraper-debug] HTML pagina partite (primi 800 char):\n{html[:800]}\n")
 
         matches = parse_page(html)
         if not matches:
