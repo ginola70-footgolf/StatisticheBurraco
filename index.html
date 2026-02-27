@@ -361,6 +361,46 @@
     .dot:nth-child(2) { animation-delay: .2s; }
     .dot:nth-child(3) { animation-delay: .4s; }
 
+    /* ── REFRESH BUTTON ────────────────────────────────────────────────── */
+    .refresh-wrap {
+      text-align: center;
+      padding: .5rem 1rem 2rem;
+      animation: fadeUp .7s .28s ease both;
+    }
+    .btn-refresh {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      background: transparent;
+      border: 1px solid var(--gold-line);
+      color: var(--gold);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: .6rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background .25s, border-color .25s, transform .15s;
+    }
+    .btn-refresh:hover {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      transform: translateY(-1px);
+    }
+    .btn-refresh:active { transform: translateY(0); }
+    .btn-refresh.loading { opacity: .55; pointer-events: none; }
+    .btn-refresh .spin {
+      display: inline-block;
+      animation: none;
+    }
+    .btn-refresh.loading .spin {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     /* ── FOOTER ─────────────────────────────────────────────────────────── */
     footer {
       text-align: center;
@@ -413,6 +453,14 @@
 
 <div class="update-bar">
   Aggiornato: <b id="ts">—</b> &nbsp;·&nbsp; refresh automatico ogni ora
+</div>
+
+<!-- REFRESH BUTTON -->
+<div class="refresh-wrap">
+  <button class="btn-refresh" id="btn-refresh" onclick="manualRefresh()">
+    <span class="spin" id="spin-icon">⟳</span>
+    Aggiorna dati
+  </button>
 </div>
 
 <!-- SCOREBOARD -->
@@ -603,6 +651,62 @@ async function load() {
 
 load();
 setInterval(load, 60 * 60 * 1000); // ricarica ogni ora
+
+/* ── REFRESH MANUALE ────────────────────────────────────────────────────── */
+// REPO: imposta il tuo repository GitHub qui (es. "nomeutente/burraco")
+const GITHUB_REPO  = "";   // ← metti "owner/repo"
+const GITHUB_TOKEN = "";   // ← OPZIONALE: personal token (scope: repo/actions)
+                           //   Lascia vuoto per solo reload del JSON locale
+
+async function manualRefresh() {
+  const btn  = document.getElementById('btn-refresh');
+  const icon = document.getElementById('spin-icon');
+  btn.classList.add('loading');
+  btn.textContent = '';
+  btn.appendChild(icon);
+  btn.append(' Aggiornamento…');
+
+  // Se hai configurato repo e token, lancia la GitHub Action
+  if (GITHUB_REPO && GITHUB_TOKEN) {
+    try {
+      const resp = await fetch(
+        `https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/update.yml/dispatches`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ref: 'main' }),
+        }
+      );
+      if (resp.ok || resp.status === 204) {
+        btn.textContent = '';
+        btn.appendChild(icon);
+        btn.append(' Action avviata! Attendi ~30s…');
+        // Ricarica il JSON dopo 35 secondi
+        setTimeout(() => { load(); resetBtn(); }, 35000);
+        return;
+      }
+    } catch (e) {
+      console.warn('GitHub dispatch fallito:', e);
+    }
+  }
+
+  // Fallback: semplice reload del JSON
+  await load();
+  resetBtn();
+}
+
+function resetBtn() {
+  const btn  = document.getElementById('btn-refresh');
+  const icon = document.getElementById('spin-icon');
+  btn.classList.remove('loading');
+  btn.textContent = '';
+  btn.appendChild(icon);
+  btn.append(' Aggiorna dati');
+}
 </script>
 </body>
 </html>
