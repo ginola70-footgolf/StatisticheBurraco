@@ -223,6 +223,20 @@ def fetch_all_pages(session):
             total = count_pages(html)
             if total:
                 print(f"[scraper] Trovate {total} pagine totali")
+            # DEBUG temporaneo: mostra HTML pagina autenticata
+            soup_dbg = BeautifulSoup(html, "html.parser")
+            table_dbg = soup_dbg.find("table", class_="gridtable")
+            if table_dbg:
+                rows_dbg = table_dbg.find_all("tr")
+                print(f"[debug] Tabella trovata, righe: {len(rows_dbg)}")
+                for i, row in enumerate(rows_dbg[:5]):
+                    cells = row.find_all(["td","th"])
+                    print(f"[debug] Riga {i} ({len(cells)} celle): {[c.get_text(strip=True)[:40] for c in cells]}")
+            else:
+                print("[debug] Nessuna tabella class=gridtable — tabelle presenti:")
+                for t in soup_dbg.find_all("table"):
+                    print(f"  <table class='{t.get('class')}' id='{t.get('id')}'>")
+                print(f"[debug] HTML grezzo (primi 1200 char):\n{html[:1200]}")
 
         matches = parse_page(html)
         if not matches:
