@@ -80,19 +80,22 @@ def parse_page(html, all_opponents, debug=False):
 
     current_date = "sconosciuta"
 
+    # find_all("tr") con recursive=False non funziona per HTML malformato
+    # usiamo strings diretti sull'HTML riparato da BeautifulSoup
     for row in table.find_all("tr"):
+        # Prendi sia td che th (il sito usa th anche per le righe dati!)
         cells = row.find_all(["td", "th"])
         if not cells:
             continue
 
-        # intestazione
-        if cells[0].name == "th":
-            continue
-
         texts = [c.get_text(strip=True) for c in cells]
 
-        # riga data (2 celle): "ITALIANO2026-02-27 14:43:58" | "Hai ottenuto..."
-        if len(cells) == 2:
+        # riga intestazione principale (celle th con testo "Data", "Squadra..." ecc.)
+        if texts[0] in ("Data", "Info"):
+            continue
+
+        # riga data (2 celle): "ITALIANO\n2026-02-27 14:43:58" | "Hai ottenuto..."
+        if len(cells) == 2 or (len(cells) == 9 and texts[1].startswith("Hai")):
             m = DATE_RE.search(texts[0])
             if m:
                 try:
@@ -101,23 +104,23 @@ def parse_page(html, all_opponents, debug=False):
                     pass
             continue
 
-        # riga partita (9 celle)
+        # riga partita (9 celle con punteggi)
         if len(cells) < 5:
             continue
+
+        # I punteggi sono in posizione 3 e 4
         if not SCORE_RE.match(texts[3]) or not SCORE_RE.match(texts[4]):
             continue
 
         squad_ns = texts[1]
         squad_eo = texts[2]
 
-        # Raccogli tutti i nick per debug
         all_opponents.add(squad_ns)
         all_opponents.add(squad_eo)
 
         score_ns = int(SCORE_RE.match(texts[3]).group(1))
         score_eo = int(SCORE_RE.match(texts[4]).group(1))
 
-        # Filtra: tieni solo partite in cui compare zappaclaud
         p2_in_ns = PLAYER2.lower() in squad_ns.lower()
         p2_in_eo = PLAYER2.lower() in squad_eo.lower()
         if not p2_in_ns and not p2_in_eo:
