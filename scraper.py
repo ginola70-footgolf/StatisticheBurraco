@@ -66,17 +66,13 @@ def login(session, username, password):
     return False
 
 # ── Parsing ─────────────────────────────────────────────────────────────────
-def parse_page(html, all_opponents, debug=False):
+def parse_page(html, all_opponents):
     soup = BeautifulSoup(html, "html.parser")
     matches = []
 
     table = soup.find("table", class_="gridtable")
     if not table:
-        print("[parse-debug] Nessuna tabella gridtable trovata")
         return matches
-
-    if debug:
-        print(f"[parse-debug] HTML tabella:\n{str(table)[:1500]}\n")
 
     current_date = "sconosciuta"
 
@@ -172,7 +168,7 @@ def fetch_all_pages(session):
             total_pages = count_pages(html)
             print(f"[scraper] Pagine totali: {total_pages}")
 
-        matches = parse_page(html, all_opponents, debug=(page == 0))
+        matches = parse_page(html, all_opponents)
         all_raw.extend(matches)
         print(f"[scraper] Pagina {page}: {len(matches)} partite vs {PLAYER2}")
 
@@ -183,10 +179,6 @@ def fetch_all_pages(session):
         page += 1
         if page > 500:
             break
-
-    print(f"\n[debug] Tutti i giocatori trovati:")
-    for opp in sorted(all_opponents):
-        print(f"  '{opp}'")
 
     return all_raw
 
