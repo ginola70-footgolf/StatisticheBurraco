@@ -1,455 +1,694 @@
 {
-  "aggiornato": "2026-02-28T10:24:45.251044+00:00",
-  "giocatori": [
-    "ginola700",
-    "zappaclaud"
-  ],
-  "totali": {
-    "ginola_vittorie": 30,
-    "zappa_vittorie": 24,
-    "totale_partite": 54,
-    "giorni_giocati": 21,
-    "ginola_pct": 55.6,
-    "zappa_pct": 44.4
-  },
-  "per_giorno": [
-    {
-      "data": "25/02/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 2,
-      "partite": [
+  "aggiornato": "2026-03-01T09:04:09.632919+00:00",
+  "player1": "ginola700",
+  "avversari": {
+    "zappaclaud": {
+      "avversario": "zappaclaud",
+      "totali": {
+        "ginola_vittorie": 30,
+        "opponent_vittorie": 24,
+        "totale_partite": 54,
+        "giorni_giocati": 21,
+        "ginola_pct": 55.6,
+        "opponent_pct": 44.4
+      },
+      "per_giorno": [
         {
-          "ginola_score": 2205,
-          "zappa_score": 805,
-          "winner": "ginola700"
+          "data": "25/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 2205,
+              "opponent_score": 805,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2050,
+              "opponent_score": 2090,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 1065,
+              "opponent_score": 2460,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 3
         },
         {
-          "ginola_score": 2050,
-          "zappa_score": 2090,
-          "winner": "zappaclaud"
+          "data": "24/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 2115,
+              "opponent_score": 1430,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 1850,
+              "opponent_score": 2130,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 1625,
+              "opponent_score": 2225,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 3
         },
         {
-          "ginola_score": 1065,
-          "zappa_score": 2460,
-          "winner": "zappaclaud"
+          "data": "23/02/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2170,
+              "opponent_score": 1255,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 1255,
+              "opponent_score": 2240,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 2015,
+              "opponent_score": 740,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "20/02/2026",
+          "ginola_vittorie": 4,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2405,
+              "opponent_score": 2040,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2335,
+              "opponent_score": 1600,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2455,
+              "opponent_score": 1540,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 1020,
+              "opponent_score": 2465,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 1065,
+              "opponent_score": 695,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 5
+        },
+        {
+          "data": "19/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2025,
+              "opponent_score": 670,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 1
+        },
+        {
+          "data": "17/02/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2220,
+              "opponent_score": 1175,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2475,
+              "opponent_score": 505,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 1645,
+              "opponent_score": 2425,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "16/02/2026",
+          "ginola_vittorie": 0,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 1315,
+              "opponent_score": 2010,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 1
+        },
+        {
+          "data": "15/02/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2890,
+              "opponent_score": 1765,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2460,
+              "opponent_score": 760,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 785,
+              "opponent_score": 2335,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "13/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2315,
+              "opponent_score": 1255,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2100,
+              "opponent_score": 2505,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 2
+        },
+        {
+          "data": "12/02/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 1425,
+              "opponent_score": 2345,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 2135,
+              "opponent_score": 1245,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2235,
+              "opponent_score": 1740,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "11/02/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2355,
+              "opponent_score": 1110,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 895,
+              "opponent_score": 2445,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 2390,
+              "opponent_score": 1080,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "07/02/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2055,
+              "opponent_score": 690,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2170,
+              "opponent_score": 1405,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 1685,
+              "opponent_score": 2340,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "06/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 970,
+              "opponent_score": 2225,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 2170,
+              "opponent_score": 2355,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 2135,
+              "opponent_score": 1795,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "05/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 1670,
+              "opponent_score": 2315,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 190,
+              "opponent_score": 170,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 2
+        },
+        {
+          "data": "03/02/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2245,
+              "opponent_score": 1690,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2105,
+              "opponent_score": 865,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 2
+        },
+        {
+          "data": "02/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2340,
+              "opponent_score": 1575,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 1
+        },
+        {
+          "data": "27/01/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2040,
+              "opponent_score": 1620,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 240,
+              "opponent_score": 2140,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 2
+        },
+        {
+          "data": "26/01/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 2125,
+              "opponent_score": 1000,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 1695,
+              "opponent_score": 2485,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 1205,
+              "opponent_score": 2210,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 2060,
+              "opponent_score": 1165,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 4
+        },
+        {
+          "data": "24/01/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2970,
+              "opponent_score": 1645,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 1
+        },
+        {
+          "data": "23/01/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 1160,
+              "opponent_score": 2290,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 2295,
+              "opponent_score": 1110,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2025,
+              "opponent_score": 2490,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "sconosciuta",
+          "ginola_vittorie": 0,
+          "opponent_vittorie": 3,
+          "partite": [
+            {
+              "ginola_score": 1665,
+              "opponent_score": 2655,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 1665,
+              "opponent_score": 2440,
+              "winner": "zappaclaud"
+            },
+            {
+              "ginola_score": 1600,
+              "opponent_score": 2385,
+              "winner": "zappaclaud"
+            }
+          ],
+          "n_partite": 3
         }
-      ],
-      "n_partite": 3
+      ]
     },
-    {
-      "data": "24/02/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 2,
-      "partite": [
+    "Giangi72": {
+      "avversario": "Giangi72",
+      "totali": {
+        "ginola_vittorie": 15,
+        "opponent_vittorie": 9,
+        "totale_partite": 24,
+        "giorni_giocati": 13,
+        "ginola_pct": 62.5,
+        "opponent_pct": 37.5
+      },
+      "per_giorno": [
         {
-          "ginola_score": 2115,
-          "zappa_score": 1430,
-          "winner": "ginola700"
+          "data": "27/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2425,
+              "opponent_score": 940,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 1
         },
         {
-          "ginola_score": 1850,
-          "zappa_score": 2130,
-          "winner": "zappaclaud"
+          "data": "26/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 1555,
+              "opponent_score": 2115,
+              "winner": "Giangi72"
+            },
+            {
+              "ginola_score": 2620,
+              "opponent_score": 1940,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 2
         },
         {
-          "ginola_score": 1625,
-          "zappa_score": 2225,
-          "winner": "zappaclaud"
+          "data": "17/02/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 695,
+              "opponent_score": 380,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2105,
+              "opponent_score": 505,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 2
+        },
+        {
+          "data": "16/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2275,
+              "opponent_score": 1755,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 1
+        },
+        {
+          "data": "05/02/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 1295,
+              "opponent_score": 435,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 1
+        },
+        {
+          "data": "13/01/2026",
+          "ginola_vittorie": 0,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2110,
+              "opponent_score": 2390,
+              "winner": "Giangi72"
+            }
+          ],
+          "n_partite": 1
+        },
+        {
+          "data": "12/01/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2090,
+              "opponent_score": 1955,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 1
+        },
+        {
+          "data": "09/01/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 2235,
+              "opponent_score": 1465,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 1480,
+              "opponent_score": 2235,
+              "winner": "Giangi72"
+            },
+            {
+              "ginola_score": 1325,
+              "opponent_score": 2280,
+              "winner": "Giangi72"
+            },
+            {
+              "ginola_score": 2310,
+              "opponent_score": 1935,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 4
+        },
+        {
+          "data": "05/01/2026",
+          "ginola_vittorie": 0,
+          "opponent_vittorie": 3,
+          "partite": [
+            {
+              "ginola_score": 2015,
+              "opponent_score": 2345,
+              "winner": "Giangi72"
+            },
+            {
+              "ginola_score": 1260,
+              "opponent_score": 2430,
+              "winner": "Giangi72"
+            },
+            {
+              "ginola_score": 1815,
+              "opponent_score": 2265,
+              "winner": "Giangi72"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "04/01/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 685,
+              "opponent_score": 2290,
+              "winner": "Giangi72"
+            },
+            {
+              "ginola_score": 2505,
+              "opponent_score": 2020,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 2
+        },
+        {
+          "data": "02/01/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2180,
+              "opponent_score": 1510,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2255,
+              "opponent_score": 1565,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 1570,
+              "opponent_score": 2060,
+              "winner": "Giangi72"
+            }
+          ],
+          "n_partite": 3
+        },
+        {
+          "data": "27/11/2025",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2370,
+              "opponent_score": 925,
+              "winner": "ginola700"
+            },
+            {
+              "ginola_score": 2065,
+              "opponent_score": 355,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 2
+        },
+        {
+          "data": "sconosciuta",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2325,
+              "opponent_score": 1105,
+              "winner": "ginola700"
+            }
+          ],
+          "n_partite": 1
         }
-      ],
-      "n_partite": 3
-    },
-    {
-      "data": "23/02/2026",
-      "ginola_vittorie": 2,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 2170,
-          "zappa_score": 1255,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 1255,
-          "zappa_score": 2240,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 2015,
-          "zappa_score": 740,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 3
-    },
-    {
-      "data": "20/02/2026",
-      "ginola_vittorie": 4,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 2405,
-          "zappa_score": 2040,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 2335,
-          "zappa_score": 1600,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 2455,
-          "zappa_score": 1540,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 1020,
-          "zappa_score": 2465,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 1065,
-          "zappa_score": 695,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 5
-    },
-    {
-      "data": "19/02/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 0,
-      "partite": [
-        {
-          "ginola_score": 2025,
-          "zappa_score": 670,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 1
-    },
-    {
-      "data": "17/02/2026",
-      "ginola_vittorie": 2,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 2220,
-          "zappa_score": 1175,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 2475,
-          "zappa_score": 505,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 1645,
-          "zappa_score": 2425,
-          "winner": "zappaclaud"
-        }
-      ],
-      "n_partite": 3
-    },
-    {
-      "data": "16/02/2026",
-      "ginola_vittorie": 0,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 1315,
-          "zappa_score": 2010,
-          "winner": "zappaclaud"
-        }
-      ],
-      "n_partite": 1
-    },
-    {
-      "data": "15/02/2026",
-      "ginola_vittorie": 2,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 2890,
-          "zappa_score": 1765,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 2460,
-          "zappa_score": 760,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 785,
-          "zappa_score": 2335,
-          "winner": "zappaclaud"
-        }
-      ],
-      "n_partite": 3
-    },
-    {
-      "data": "13/02/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 2315,
-          "zappa_score": 1255,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 2100,
-          "zappa_score": 2505,
-          "winner": "zappaclaud"
-        }
-      ],
-      "n_partite": 2
-    },
-    {
-      "data": "12/02/2026",
-      "ginola_vittorie": 2,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 1425,
-          "zappa_score": 2345,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 2135,
-          "zappa_score": 1245,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 2235,
-          "zappa_score": 1740,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 3
-    },
-    {
-      "data": "11/02/2026",
-      "ginola_vittorie": 2,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 2355,
-          "zappa_score": 1110,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 895,
-          "zappa_score": 2445,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 2390,
-          "zappa_score": 1080,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 3
-    },
-    {
-      "data": "07/02/2026",
-      "ginola_vittorie": 2,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 2055,
-          "zappa_score": 690,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 2170,
-          "zappa_score": 1405,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 1685,
-          "zappa_score": 2340,
-          "winner": "zappaclaud"
-        }
-      ],
-      "n_partite": 3
-    },
-    {
-      "data": "06/02/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 2,
-      "partite": [
-        {
-          "ginola_score": 970,
-          "zappa_score": 2225,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 2170,
-          "zappa_score": 2355,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 2135,
-          "zappa_score": 1795,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 3
-    },
-    {
-      "data": "05/02/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 1670,
-          "zappa_score": 2315,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 190,
-          "zappa_score": 170,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 2
-    },
-    {
-      "data": "03/02/2026",
-      "ginola_vittorie": 2,
-      "zappa_vittorie": 0,
-      "partite": [
-        {
-          "ginola_score": 2245,
-          "zappa_score": 1690,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 2105,
-          "zappa_score": 865,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 2
-    },
-    {
-      "data": "02/02/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 0,
-      "partite": [
-        {
-          "ginola_score": 2340,
-          "zappa_score": 1575,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 1
-    },
-    {
-      "data": "27/01/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 1,
-      "partite": [
-        {
-          "ginola_score": 2040,
-          "zappa_score": 1620,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 240,
-          "zappa_score": 2140,
-          "winner": "zappaclaud"
-        }
-      ],
-      "n_partite": 2
-    },
-    {
-      "data": "26/01/2026",
-      "ginola_vittorie": 2,
-      "zappa_vittorie": 2,
-      "partite": [
-        {
-          "ginola_score": 2125,
-          "zappa_score": 1000,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 1695,
-          "zappa_score": 2485,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 1205,
-          "zappa_score": 2210,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 2060,
-          "zappa_score": 1165,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 4
-    },
-    {
-      "data": "24/01/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 0,
-      "partite": [
-        {
-          "ginola_score": 2970,
-          "zappa_score": 1645,
-          "winner": "ginola700"
-        }
-      ],
-      "n_partite": 1
-    },
-    {
-      "data": "23/01/2026",
-      "ginola_vittorie": 1,
-      "zappa_vittorie": 2,
-      "partite": [
-        {
-          "ginola_score": 1160,
-          "zappa_score": 2290,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 2295,
-          "zappa_score": 1110,
-          "winner": "ginola700"
-        },
-        {
-          "ginola_score": 2025,
-          "zappa_score": 2490,
-          "winner": "zappaclaud"
-        }
-      ],
-      "n_partite": 3
-    },
-    {
-      "data": "sconosciuta",
-      "ginola_vittorie": 0,
-      "zappa_vittorie": 3,
-      "partite": [
-        {
-          "ginola_score": 1665,
-          "zappa_score": 2655,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 1665,
-          "zappa_score": 2440,
-          "winner": "zappaclaud"
-        },
-        {
-          "ginola_score": 1600,
-          "zappa_score": 2385,
-          "winner": "zappaclaud"
-        }
-      ],
-      "n_partite": 3
+      ]
     }
-  ]
+  }
 }
