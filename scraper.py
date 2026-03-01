@@ -23,7 +23,10 @@ CREDS_FILE  = "credentials.txt"
 OUTPUT      = "partite.json"
 
 PLAYER1 = "ginola700"    # utente loggato (user=237071)
-PLAYER2 = "zappaclaud"   # avversario da cercare
+PLAYER2 = "zappaclaud"   # avversario 1
+PLAYER3 = "Giangi72"     # avversario 2
+
+OPPONENTS = [PLAYER2, PLAYER3]  # lista avversari da tracciare
 
 DATE_RE  = re.compile(r'(\d{4}-\d{2}-\d{2})')
 SCORE_RE = re.compile(r'^(\d+)\s*\(')
@@ -67,30 +70,30 @@ def login(session, username, password):
 
 # ── Parsing ─────────────────────────────────────────────────────────────────
 def parse_page(html, all_opponents):
+    """
+    Ritorna un dict { opponent_name: [match, ...] } per tutti gli avversari trovati.
+    """
     soup = BeautifulSoup(html, "html.parser")
-    matches = []
+    matches_by_opponent = {opp: [] for opp in OPPONENTS}
 
     table = soup.find("table", class_="gridtable")
     if not table:
-        return matches
+        return matches_by_opponent
 
     current_date = "sconosciuta"
 
-    # find_all("tr") con recursive=False non funziona per HTML malformato
-    # usiamo strings diretti sull'HTML riparato da BeautifulSoup
     for row in table.find_all("tr"):
-        # Prendi sia td che th (il sito usa th anche per le righe dati!)
         cells = row.find_all(["td", "th"])
         if not cells:
             continue
 
         texts = [c.get_text(strip=True) for c in cells]
 
-        # riga intestazione principale (celle th con testo "Data", "Squadra..." ecc.)
+        # riga intestazione principale
         if texts[0] in ("Data", "Info"):
             continue
 
-        # riga data (2 celle): "ITALIANO\n2026-02-27 14:43:58" | "Hai ottenuto..."
+        # riga data (2 celle)
         if len(cells) == 2 or (len(cells) == 9 and texts[1].startswith("Hai")):
             m = DATE_RE.search(texts[0])
             if m:
@@ -100,11 +103,10 @@ def parse_page(html, all_opponents):
                     pass
             continue
 
-        # riga partita (9 celle con punteggi)
+        # riga partita (almeno 5 celle con punteggi)
         if len(cells) < 5:
             continue
 
-        # I punteggi sono in posizione 3 e 4
         if not SCORE_RE.match(texts[3]) or not SCORE_RE.match(texts[4]):
             continue
 
@@ -117,27 +119,29 @@ def parse_page(html, all_opponents):
         score_ns = int(SCORE_RE.match(texts[3]).group(1))
         score_eo = int(SCORE_RE.match(texts[4]).group(1))
 
-        p2_in_ns = PLAYER2.lower() in squad_ns.lower()
-        p2_in_eo = PLAYER2.lower() in squad_eo.lower()
-        if not p2_in_ns and not p2_in_eo:
-            continue
+        # Controlla se la riga riguarda uno degli avversari tracciati
+        for opponent in OPPONENTS:
+            opp_in_ns = opponent.lower() in squad_ns.lower()
+            opp_in_eo = opponent.lower() in squad_eo.lower()
+            if not opp_in_ns and not opp_in_eo:
+                continue
 
-        if p2_in_eo:
-            ginola_score = score_ns
-            zappa_score  = score_eo
-        else:
-            ginola_score = score_eo
-            zappa_score  = score_ns
+            if opp_in_eo:
+                ginola_score   = score_ns
+                opponent_score = score_eo
+            else:
+                ginola_score   = score_eo
+                opponent_score = score_ns
 
-        winner = PLAYER1 if ginola_score > zappa_score else PLAYER2
-        matches.append({
-            "data":         current_date,
-            "ginola_score": ginola_score,
-            "zappa_score":  zappa_score,
-            "winner":       winner,
-        })
+            winner = PLAYER1 if ginola_score > opponent_score else opponent
+            matches_by_opponent[opponent].append({
+                "data":           current_date,
+                "ginola_score":   ginola_score,
+                "opponent_score": opponent_score,
+                "winner":         winner,
+            })
 
-    return matches
+    return matches_by_opponent
 
 # ── Paginazione ──────────────────────────────────────────────────────────────
 def count_pages(html):
@@ -151,7 +155,7 @@ def count_pages(html):
 
 # ── Fetch tutte le pagine ────────────────────────────────────────────────────
 def fetch_all_pages(session):
-    all_raw = []
+    all_raw = {opp: [] for opp in OPPONENTS}
     all_opponents = set()
     page = 0
     total_pages = None
@@ -168,9 +172,12 @@ def fetch_all_pages(session):
             total_pages = count_pages(html)
             print(f"[scraper] Pagine totali: {total_pages}")
 
-        matches = parse_page(html, all_opponents)
-        all_raw.extend(matches)
-        print(f"[scraper] Pagina {page}: {len(matches)} partite vs {PLAYER2}")
+        matches_by_opponent = parse_page(html, all_opponents)
+        for opp in OPPONENTS:
+            all_raw[opp].extend(matches_by_opponent[opp])
+
+        counts = ", ".join(f"{opp}: {len(matches_by_opponent[opp])}" for opp in OPPONENTS)
+        print(f"[scraper] Pagina {page}: {counts}")
 
         if total_pages and page + 1 >= total_pages:
             print("[scraper] Ultima pagina raggiunta.")
@@ -182,21 +189,26 @@ def fetch_all_pages(session):
 
     return all_raw
 
-# ── Aggregazione ─────────────────────────────────────────────────────────────
-def aggregate(raw_matches):
+# ── Aggregazione per un singolo avversario ───────────────────────────────────
+def aggregate_opponent(raw_matches, opponent):
     by_day = {}
     for m in raw_matches:
         data = m.get("data", "sconosciuta")
         if data not in by_day:
-            by_day[data] = {"data": data, "ginola_vittorie": 0, "zappa_vittorie": 0, "partite": []}
+            by_day[data] = {
+                "data":             data,
+                "ginola_vittorie":  0,
+                "opponent_vittorie": 0,
+                "partite":          [],
+            }
         if m.get("winner") == PLAYER1:
             by_day[data]["ginola_vittorie"] += 1
         else:
-            by_day[data]["zappa_vittorie"] += 1
+            by_day[data]["opponent_vittorie"] += 1
         by_day[data]["partite"].append({
-            "ginola_score": m["ginola_score"],
-            "zappa_score":  m["zappa_score"],
-            "winner":       m["winner"],
+            "ginola_score":   m["ginola_score"],
+            "opponent_score": m["opponent_score"],
+            "winner":         m["winner"],
         })
 
     def parse_date(d):
@@ -209,20 +221,19 @@ def aggregate(raw_matches):
     for g in per_giorno:
         g["n_partite"] = len(g["partite"])
 
-    tot_g = sum(g["ginola_vittorie"] for g in per_giorno)
-    tot_z = sum(g["zappa_vittorie"]  for g in per_giorno)
-    tot   = tot_g + tot_z
+    tot_g = sum(g["ginola_vittorie"]   for g in per_giorno)
+    tot_o = sum(g["opponent_vittorie"] for g in per_giorno)
+    tot   = tot_g + tot_o
 
     return {
-        "aggiornato": datetime.now(timezone.utc).isoformat(),
-        "giocatori":  [PLAYER1, PLAYER2],
+        "avversario": opponent,
         "totali": {
-            "ginola_vittorie": tot_g,
-            "zappa_vittorie":  tot_z,
-            "totale_partite":  tot,
-            "giorni_giocati":  len(per_giorno),
-            "ginola_pct":      round(tot_g / tot * 100, 1) if tot else 0,
-            "zappa_pct":       round(tot_z / tot * 100, 1) if tot else 0,
+            "ginola_vittorie":    tot_g,
+            "opponent_vittorie":  tot_o,
+            "totale_partite":     tot,
+            "giorni_giocati":     len(per_giorno),
+            "ginola_pct":         round(tot_g / tot * 100, 1) if tot else 0,
+            "opponent_pct":       round(tot_o / tot * 100, 1) if tot else 0,
         },
         "per_giorno": per_giorno,
     }
@@ -243,19 +254,32 @@ def main():
     })
 
     login(session, username, password)
-    raw_matches = fetch_all_pages(session)
+    raw_by_opponent = fetch_all_pages(session)
 
-    print(f"\n[aggregazione] Partite vs {PLAYER2}: {len(raw_matches)}")
-    data = aggregate(raw_matches)
+    output_data = {
+        "aggiornato": datetime.now(timezone.utc).isoformat(),
+        "player1":    PLAYER1,
+        "avversari":  {},
+    }
+
+    print()
+    for opponent in OPPONENTS:
+        raw = raw_by_opponent[opponent]
+        print(f"[aggregazione] Partite vs {opponent}: {len(raw)}")
+        agg = aggregate_opponent(raw, opponent)
+        output_data["avversari"][opponent] = agg
 
     with open(OUTPUT, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump(output_data, f, ensure_ascii=False, indent=2)
 
     print(f"\n[✓] Salvato '{OUTPUT}'")
-    print(f"    Partite totali : {data['totali']['totale_partite']}")
-    print(f"    {PLAYER1:12s}: {data['totali']['ginola_vittorie']} vittorie")
-    print(f"    {PLAYER2:12s}: {data['totali']['zappa_vittorie']} vittorie")
-    print(f"    Giorni giocati : {data['totali']['giorni_giocati']}")
+    for opponent in OPPONENTS:
+        t = output_data["avversari"][opponent]["totali"]
+        print(f"\n  ── vs {opponent} ──")
+        print(f"    Partite totali : {t['totale_partite']}")
+        print(f"    {PLAYER1:12s}: {t['ginola_vittorie']} vittorie ({t['ginola_pct']}%)")
+        print(f"    {opponent:12s}: {t['opponent_vittorie']} vittorie ({t['opponent_pct']}%)")
+        print(f"    Giorni giocati : {t['giorni_giocati']}")
 
 if __name__ == "__main__":
     main()
