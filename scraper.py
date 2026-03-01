@@ -68,10 +68,19 @@ def login(session, username, password):
     print("[login] ✗ Login fallito")
     return False
 
+# Tipi di partita validi (le altre, es. "In corso", vengono ignorate)
+VALID_TYPES = {"finepartita", "abbandono"}
+
 # ── Parsing ─────────────────────────────────────────────────────────────────
 def parse_page(html, all_opponents):
     """
     Ritorna un dict { opponent_name: [match, ...] } per tutti gli avversari trovati.
+
+    Regole:
+    - La data viene letta dalla cella 0 della riga di partita stessa (dove compare
+      ginola700), non da una riga separata.
+    - Vengono considerate valide solo le righe che contengono "FinePartita" o
+      "Abbandono" in una qualunque delle celle.
     """
     soup = BeautifulSoup(html, "html.parser")
     matches_by_opponent = {opp: [] for opp in OPPONENTS}
@@ -80,8 +89,6 @@ def parse_page(html, all_opponents):
     if not table:
         return matches_by_opponent
 
-    current_date = "sconosciuta"
-
     for row in table.find_all("tr"):
         cells = row.find_all(["td", "th"])
         if not cells:
@@ -89,26 +96,35 @@ def parse_page(html, all_opponents):
 
         texts = [c.get_text(strip=True) for c in cells]
 
-        # riga intestazione principale
+        # Salta intestazioni
         if texts[0] in ("Data", "Info"):
             continue
 
-        # riga data (2 celle)
-        if len(cells) == 2 or (len(cells) == 9 and texts[1].startswith("Hai")):
-            m = DATE_RE.search(texts[0])
-            if m:
-                try:
-                    current_date = datetime.strptime(m.group(1), "%Y-%m-%d").strftime("%d/%m/%Y")
-                except ValueError:
-                    pass
-            continue
-
-        # riga partita (almeno 5 celle con punteggi)
+        # Deve avere abbastanza colonne per essere una riga partita
         if len(cells) < 5:
             continue
 
+        # Filtra: almeno una cella deve contenere "FinePartita" o "Abbandono"
+        row_text = " ".join(texts)
+        match_type = next(
+            (t for t in VALID_TYPES if t in row_text.lower().replace(" ", "")),
+            None
+        )
+        if match_type is None:
+            continue
+
+        # I punteggi devono essere nelle posizioni 3 e 4
         if not SCORE_RE.match(texts[3]) or not SCORE_RE.match(texts[4]):
             continue
+
+        # ── Data: estratta dalla cella 0 della riga corrente ──────────────
+        row_date = "sconosciuta"
+        m = DATE_RE.search(texts[0])
+        if m:
+            try:
+                row_date = datetime.strptime(m.group(1), "%Y-%m-%d").strftime("%d/%m/%Y")
+            except ValueError:
+                pass
 
         squad_ns = texts[1]
         squad_eo = texts[2]
@@ -135,7 +151,8 @@ def parse_page(html, all_opponents):
 
             winner = PLAYER1 if ginola_score > opponent_score else opponent
             matches_by_opponent[opponent].append({
-                "data":           current_date,
+                "data":           row_date,
+                "tipo":           match_type,   # "finepartita" o "abbandono"
                 "ginola_score":   ginola_score,
                 "opponent_score": opponent_score,
                 "winner":         winner,
@@ -209,6 +226,7 @@ def aggregate_opponent(raw_matches, opponent):
             "ginola_score":   m["ginola_score"],
             "opponent_score": m["opponent_score"],
             "winner":         m["winner"],
+            "tipo":           m.get("tipo", "finepartita"),
         })
 
     def parse_date(d):
