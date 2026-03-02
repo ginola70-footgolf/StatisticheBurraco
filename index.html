@@ -3,580 +3,577 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Burraco Battle ♠ ginola700</title>
+  <title>Burraco Battle · ginola700</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    /* ── TOKENS ─────────────────────────────────────────────────────────── */
     :root {
-      --felt:      #18322a;
-      --felt-mid:  #1e3d31;
-      --felt-hi:   #254a3c;
-      --gold:      #c8a84b;
-      --gold-dim:  rgba(200,168,75,0.18);
-      --gold-line: rgba(200,168,75,0.35);
-      --cream:     #f2ebdd;
-      --cream-dim: rgba(242,235,221,0.55);
-      --red:       #bf3030;
-      --red-dim:   rgba(191,48,48,0.18);
-      --blue:      #4b8ec8;
-      --blue-dim:  rgba(75,142,200,0.18);
-      --blue-line: rgba(75,142,200,0.35);
-      --shadow:    rgba(0,0,0,0.55);
-      --radius:    10px;
+      --bg:         #0e0e10;
+      --bg2:        #16161a;
+      --bg3:        #1e1e24;
+      --bg4:        #252530;
+      --border:     rgba(255,255,255,.07);
+      --border-hi:  rgba(255,255,255,.13);
+
+      --blue:       #3d6aad;
+      --blue-hi:    #5b8ee8;
+      --blue-dim:   rgba(61,106,173,.18);
+      --blue-glow:  rgba(91,142,232,.4);
+
+      --orange:     #e8642a;
+      --orange-hi:  #ff7a42;
+      --orange-dim: rgba(232,100,42,.15);
+
+      --green:      #2ecc71;
+      --red:        #e84242;
+
+      --text:       #f0f0f5;
+      --text2:      rgba(240,240,245,.6);
+      --text3:      rgba(240,240,245,.35);
+      --text4:      rgba(240,240,245,.15);
+
+      --radius-sm:  6px;
+      --radius:     10px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
     body {
-      background-color: var(--felt);
-      background-image:
-        radial-gradient(ellipse 80% 60% at 10% 5%,  rgba(37,74,60,.6) 0%, transparent 60%),
-        radial-gradient(ellipse 70% 50% at 90% 95%, rgba(10,22,17,.7) 0%, transparent 55%),
-        url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.018'%3E%3Cpath d='M0 0h1v1H0z'/%3E%3Cpath d='M20 20h1v1h-1z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
       min-height: 100vh;
-      font-family: 'IBM Plex Mono', monospace;
-      color: var(--cream);
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ── HEADER ─────────────────────────────────────────────────────────── */
-    header {
-      padding: 4rem 1.5rem 2.5rem;
-      text-align: center;
-      position: relative;
-    }
-    .deco-suits {
-      font-size: 1.1rem;
-      letter-spacing: 1.4rem;
-      color: var(--gold);
-      opacity: .55;
-      margin-bottom: 1.2rem;
-      animation: fadeUp .7s ease both;
-    }
-    h1 {
-      font-family: 'Bodoni Moda', serif;
-      font-weight: 900;
-      font-size: clamp(2.6rem, 7vw, 5.2rem);
-      line-height: .96;
-      color: var(--cream);
-      letter-spacing: -.025em;
-      animation: fadeUp .7s .08s ease both;
-    }
-    h1 em {
-      display: block;
-      font-family: 'Libre Baskerville', serif;
-      font-style: italic;
-      font-weight: 400;
-      font-size: .38em;
-      color: var(--gold);
-      letter-spacing: .15em;
-      margin-top: .35em;
-    }
-    .ornament {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      justify-content: center;
-      margin: 1.8rem auto 0;
-      animation: fadeUp .7s .18s ease both;
-    }
-    .ornament-line {
-      height: 1px;
-      width: 80px;
-      background: linear-gradient(90deg, transparent, var(--gold));
-    }
-    .ornament-line:last-child { background: linear-gradient(90deg, var(--gold), transparent); }
-    .ornament-diamond { color: var(--gold); font-size: .9rem; }
-
-    /* ── UPDATE BAR ─────────────────────────────────────────────────────── */
-    .update-bar {
-      text-align: center;
-      font-size: .62rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: rgba(242,235,221,.28);
-      padding: .5rem 1rem 1.5rem;
-    }
-    .update-bar b { color: rgba(200,168,75,.6); }
-
-    /* ── REFRESH BUTTON ─────────────────────────────────────────────────── */
-    .refresh-wrap {
-      text-align: center;
-      padding: .5rem 1rem 2rem;
-      animation: fadeUp .7s .28s ease both;
-    }
-    .btn-refresh {
-      display: inline-flex;
-      align-items: center;
-      gap: .55rem;
-      background: transparent;
-      border: 1px solid var(--gold-line);
-      color: var(--gold);
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: .68rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      padding: .6rem 1.5rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background .25s, border-color .25s, transform .15s;
-    }
-    .btn-refresh:hover { background: var(--gold-dim); border-color: var(--gold); transform: translateY(-1px); }
-    .btn-refresh:active { transform: translateY(0); }
-    .btn-refresh.loading { opacity: .55; pointer-events: none; }
-    .btn-refresh .spin { display: inline-block; }
-    .btn-refresh.loading .spin { animation: spin 1s linear infinite; }
-
-    /* ── SINTESI GLOBALE ─────────────────────────────────────────────────── */
-    .wrap { max-width: 880px; margin: 0 auto; padding: 0 1rem 5rem; }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.4rem;
-      margin-bottom: 2.8rem;
-      animation: fadeUp .7s .22s ease both;
-    }
-
-    .summary-card {
-      border-radius: var(--radius);
-      overflow: hidden;
-      position: relative;
-    }
-    .summary-card.zappa {
-      border: 1px solid var(--gold-line);
-      background: linear-gradient(145deg, rgba(200,168,75,.06), rgba(255,255,255,.02));
-    }
-    .summary-card.giangi {
-      border: 1px solid var(--blue-line);
-      background: linear-gradient(145deg, rgba(75,142,200,.07), rgba(255,255,255,.02));
-    }
-
-    .sc-header {
-      padding: 1.2rem 1.4rem .8rem;
-      border-bottom: 1px solid rgba(255,255,255,.06);
+    /* ══ TOP NAV ══════════════════════════════════════════════════════════ */
+    .topnav {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      height: 58px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-    .sc-title {
-      font-family: 'Bodoni Moda', serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: .04em;
-    }
-    .summary-card.zappa  .sc-title { color: var(--gold); }
-    .summary-card.giangi .sc-title { color: var(--blue); }
-
-    .sc-badge {
-      font-size: .55rem;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      padding: .2rem .6rem;
-      border-radius: 3px;
-    }
-    .zappa  .sc-badge { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--gold-line); }
-    .giangi .sc-badge { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-line); }
-
-    .sc-body {
-      padding: 1.2rem 1.4rem 1.4rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    /* scoreboard a 3 col: gin | vs | avversario */
-    .sb-row {
+    .nav-brand { display: flex; align-items: center; gap: .75rem; }
+
+    .nav-logo {
+      width: 34px; height: 34px;
+      background: var(--blue);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 800; color: #fff;
+      box-shadow: 0 0 18px var(--blue-glow);
+    }
+
+    .nav-title { font-size: .9rem; font-weight: 700; }
+    .nav-sub   { font-size: .7rem; color: var(--text3); }
+
+    .nav-right { display: flex; align-items: center; gap: .7rem; }
+
+    .live-pill {
+      display: flex; align-items: center; gap: .4rem;
+      background: rgba(46,204,113,.1);
+      border: 1px solid rgba(46,204,113,.25);
+      border-radius: 20px;
+      padding: .22rem .7rem;
+      font-size: .65rem; font-weight: 600; color: var(--green);
+    }
+
+    .live-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      animation: pulse-green 2s ease infinite;
+    }
+
+    .nav-ts { font-size: .68rem; color: var(--text3); }
+
+    .btn-refresh {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: var(--radius-sm);
+      font-family: 'Inter', sans-serif;
+      font-size: .72rem; font-weight: 600;
+      padding: .48rem 1.1rem;
+      cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 2px 14px var(--blue-glow);
+    }
+
+    .btn-refresh:hover { background: var(--blue-hi); transform: translateY(-1px); }
+    .btn-refresh.loading { opacity: .6; pointer-events: none; }
+    .spin { display: inline-block; }
+    .btn-refresh.loading .spin { animation: spin 1s linear infinite; }
+
+    /* ══ HERO ═════════════════════════════════════════════════════════════ */
+    .hero {
+      background: linear-gradient(180deg, #13131a 0%, var(--bg2) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 1.5rem 0;
+    }
+
+    .hero-inner { max-width: 900px; margin: 0 auto; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--blue-dim);
+      border: 1px solid rgba(61,106,173,.3);
+      color: var(--blue-hi);
+      font-size: .63rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .2rem .75rem; border-radius: 20px;
+      margin-bottom: 1.6rem;
+    }
+
+    /* Scoreboard */
+    .scoreboard-wrap {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: .5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.4rem;
     }
-    .sb-player {}
-    .sb-player.right { text-align: right; }
-    .sb-nick {
-      font-size: .62rem;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(242,235,221,.38);
-      margin-bottom: .2rem;
+
+    .team-block { display: flex; flex-direction: column; gap: .45rem; }
+    .team-block.right { align-items: flex-end; text-align: right; }
+
+    .team-avatar {
+      width: 54px; height: 54px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; font-weight: 800;
+      border: 2px solid;
     }
-    .sb-wins {
-      font-size: 3.2rem;
-      font-weight: 300;
-      line-height: 1;
+
+    .av-gin { background: var(--blue-dim); color: var(--blue-hi); border-color: rgba(61,106,173,.45); }
+    .av-opp { background: var(--orange-dim); color: var(--orange-hi); border-color: rgba(232,100,42,.45); }
+
+    .team-name { font-size: .92rem; font-weight: 700; }
+    .team-wr   { font-size: .7rem; color: var(--text3); font-weight: 500; }
+
+    .score-center {
+      display: flex; flex-direction: column;
+      align-items: center; gap: .3rem;
+      padding: 0 2.5rem;
+    }
+
+    .score-nums { display: flex; align-items: center; gap: .4rem; }
+
+    .score-val {
+      font-size: 3.8rem; font-weight: 800;
       font-variant-numeric: tabular-nums;
-      letter-spacing: -.04em;
-    }
-    .sb-wins.gold  { color: var(--gold);  text-shadow: 0 0 32px rgba(200,168,75,.3); }
-    .sb-wins.blue  { color: var(--blue);  text-shadow: 0 0 32px rgba(75,142,200,.3); }
-    .sb-wins.cream { color: var(--cream); }
-    .sb-wins.dim   { color: rgba(242,235,221,.25); }
-
-    .sb-vs {
-      font-family: 'Libre Baskerville', serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      color: rgba(242,235,221,.2);
-      text-align: center;
+      line-height: 1; letter-spacing: -.05em;
     }
 
-    /* leader crown */
-    .crown { color: var(--gold); font-size: .85rem; display: block; }
+    .score-val.leader  { color: var(--text); }
+    .score-val.trailer { color: var(--text3); }
+    .score-val.tied    { color: var(--text2); }
+    .score-sep { font-size: 2rem; font-weight: 300; color: var(--text4); }
+    .score-lbl { font-size: .6rem; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--text3); }
 
-    /* progress bar */
-    .pb-wrap { margin-bottom: .5rem; }
-    .pb-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: .58rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: rgba(242,235,221,.32);
-      margin-bottom: .35rem;
+    /* Win bar */
+    .win-bar-wrap { padding-bottom: 1.2rem; }
+
+    .win-bar-labels {
+      display: flex; justify-content: space-between;
+      font-size: .68rem; font-weight: 600; margin-bottom: .45rem;
     }
-    .pb-bar {
-      height: 4px;
-      border-radius: 2px;
-      background: rgba(255,255,255,.07);
+
+    .wbl-gin { color: var(--blue-hi); }
+    .wbl-opp { color: var(--orange-hi); }
+
+    .win-bar {
+      height: 6px; border-radius: 3px;
+      background: rgba(232,100,42,.2);
       overflow: hidden;
     }
-    .pb-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 1s cubic-bezier(.4,0,.2,1);
-    }
-    .zappa  .pb-fill { background: linear-gradient(90deg, var(--gold), rgba(200,168,75,.4)); }
-    .giangi .pb-fill { background: linear-gradient(90deg, var(--blue), rgba(75,142,200,.4)); }
 
-    .sc-meta {
-      font-size: .6rem;
-      color: rgba(242,235,221,.28);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-top: .7rem;
-    }
-    .sc-meta b { color: rgba(242,235,221,.5); font-weight: 500; }
-
-    /* ── TAB SWITCHER ────────────────────────────────────────────────────── */
-    .section-head {
-      font-family: 'Bodoni Moda', serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: .06em;
-      margin: 2.8rem 0 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: .8rem;
-    }
-    .section-head::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, var(--gold-line), transparent);
+    .win-bar-fill {
+      height: 100%; background: var(--blue); border-radius: 3px;
+      transition: width 1.2s cubic-bezier(.4,0,.2,1);
     }
 
-    .tab-bar {
-      display: flex;
-      gap: .5rem;
-      margin-bottom: 1.3rem;
+    /* Tab nav */
+    .tab-nav {
+      max-width: 900px; margin: 0 auto;
+      display: flex; border-top: 1px solid var(--border);
     }
-    .tab-btn {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: .65rem;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      padding: .45rem 1.1rem;
-      border-radius: 4px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: transparent;
-      color: rgba(242,235,221,.38);
+
+    .tab-nav-btn {
+      background: none; border: none;
+      color: var(--text3);
+      font-family: 'Inter', sans-serif;
+      font-size: .78rem; font-weight: 600;
+      padding: .9rem 1.5rem;
       cursor: pointer;
-      transition: all .2s;
+      border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
     }
-    .tab-btn:hover { color: var(--cream); border-color: rgba(255,255,255,.25); }
-    .tab-btn.active-zappa  { background: var(--gold-dim); border-color: var(--gold-line); color: var(--gold); }
-    .tab-btn.active-giangi { background: var(--blue-dim); border-color: var(--blue-line); color: var(--blue); }
 
-    /* ── GIORNO CARD ─────────────────────────────────────────────────────── */
-    .giorno {
-      border: 1px solid rgba(255,255,255,.07);
-      border-radius: var(--radius);
-      margin-bottom: .65rem;
-      overflow: hidden;
-      background: rgba(255,255,255,.03);
-      transition: border-color .25s, background .25s;
-      animation: fadeSlide .45s ease both;
+    .tab-nav-btn:hover { color: var(--text2); }
+    .tab-nav-btn.active { color: var(--text); border-bottom-color: var(--blue); }
+
+    /* ══ MAIN ═════════════════════════════════════════════════════════════ */
+    .main { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 5rem; }
+
+    /* Stat pills */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .7rem;
+      margin-bottom: 1.6rem;
+      animation: fadeUp .4s ease both;
     }
-    .list-zappa  .giorno:hover { border-color: var(--gold-line); background: rgba(255,255,255,.055); }
-    .list-giangi .giorno:hover { border-color: var(--blue-line); background: rgba(75,142,200,.04); }
+
+    .stat-pill {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+      transition: border-color .2s, background .2s;
+    }
+
+    .stat-pill:hover { border-color: var(--border-hi); background: var(--bg3); }
+    .sp-lbl  { font-size: .62rem; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .25rem; }
+    .sp-val  { font-size: 1.55rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; line-height: 1; margin-bottom: .15rem; }
+    .sp-sub  { font-size: .63rem; color: var(--text3); }
+
+    /* Section title */
+    .section-title {
+      font-size: .7rem; font-weight: 700;
+      color: var(--text3); text-transform: uppercase; letter-spacing: .1em;
+      margin: 1.6rem 0 .85rem;
+      display: flex; align-items: center; gap: .7rem;
+    }
+
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ══ GIORNO CARDS ═════════════════════════════════════════════════════ */
+    .giorno {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: .5rem;
+      overflow: hidden;
+      transition: border-color .2s, background .2s;
+      animation: fadeIn .3s ease both;
+    }
+
+    .giorno:hover { border-color: var(--border-hi); background: var(--bg3); }
 
     .giorno-head {
-      display: flex;
+      display: grid;
+      grid-template-columns: 115px 1fr auto 36px;
       align-items: center;
       padding: .9rem 1.2rem;
       cursor: pointer;
-      gap: .8rem;
       user-select: none;
+      gap: .7rem;
     }
-    .g-date {
-      font-family: 'Libre Baskerville', serif;
-      font-style: italic;
-      font-size: 1rem;
-      color: var(--gold);
-      min-width: 110px;
-    }
-    .list-giangi .g-date { color: var(--blue); }
 
-    .g-score-row {
-      flex: 1;
-      display: flex;
-      align-items: baseline;
-      gap: .55rem;
-    }
-    .g-player { font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(242,235,221,.4); }
-    .g-n {
-      font-size: 1.55rem;
-      font-weight: 300;
-      color: var(--cream);
+    .g-date-blk { display: flex; flex-direction: column; gap: .05rem; }
+    .g-date    { font-size: .8rem; font-weight: 600; }
+    .g-weekday { font-size: .62rem; color: var(--text3); font-weight: 500; }
+
+    .g-score-row { display: flex; align-items: center; gap: .6rem; }
+    .g-player-lbl { font-size: .7rem; font-weight: 600; color: var(--text3); min-width: 55px; }
+    .g-player-lbl.right { text-align: right; }
+
+    .g-score-big {
+      font-size: 1.5rem; font-weight: 700;
       font-variant-numeric: tabular-nums;
-      line-height: 1;
+      min-width: 20px; text-align: center; line-height: 1;
     }
-    .g-n.hi-gold  { color: var(--gold); font-weight: 500; }
-    .g-n.hi-blue  { color: var(--blue); font-weight: 500; }
-    .g-n.lo       { color: rgba(242,235,221,.28); }
-    .g-dash { color: rgba(242,235,221,.2); }
-    .g-meta { font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(242,235,221,.28); }
-    .g-arrow { color: rgba(200,168,75,.38); font-size: .7rem; transition: transform .3s; }
-    .list-giangi .g-arrow { color: rgba(75,142,200,.38); }
-    .giorno.open .g-arrow { transform: rotate(180deg); }
 
-    .giorno-body { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+    .g-score-big.win  { color: var(--text); }
+    .g-score-big.lose { color: var(--text3); }
+    .g-score-big.tie  { color: var(--text2); }
+    .g-dash { color: var(--text4); font-size: .9rem; }
+
+    .g-meta-blk { display: flex; flex-direction: column; align-items: flex-end; gap: .3rem; }
+
+    .g-winner-badge {
+      font-size: .6rem; font-weight: 700;
+      padding: .14rem .55rem; border-radius: 20px;
+      letter-spacing: .04em;
+    }
+
+    .g-winner-badge.gin { background: var(--blue-dim); color: var(--blue-hi); border: 1px solid rgba(61,106,173,.3); }
+    .g-winner-badge.opp { background: var(--orange-dim); color: var(--orange-hi); border: 1px solid rgba(232,100,42,.3); }
+    .g-winner-badge.par { background: rgba(255,255,255,.05); color: var(--text3); }
+
+    .g-partite { font-size: .62rem; font-weight: 500; color: var(--text3); }
+
+    .g-chevron { font-size: .6rem; color: var(--text3); transition: transform .25s; justify-self: end; }
+    .giorno.open .g-chevron { transform: rotate(180deg); }
+
+    /* Accordion */
+    .giorno-body { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
     .giorno.open .giorno-body { max-height: 2000px; }
 
-    .match-list {
-      border-top: 1px solid rgba(255,255,255,.06);
-      padding: .5rem 1.2rem .9rem;
-    }
+    .match-list { border-top: 1px solid var(--border); background: rgba(0,0,0,.25); }
+
     .match-row {
       display: grid;
-      grid-template-columns: 1.5rem 1fr auto auto auto 1fr auto;
+      grid-template-columns: 26px 1fr 58px 18px 58px 1fr 34px;
       align-items: center;
-      gap: .5rem;
-      padding: .42rem 0;
-      border-bottom: 1px solid rgba(255,255,255,.04);
-      font-size: .76rem;
+      gap: .4rem;
+      padding: .58rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      font-size: .74rem;
+      transition: background .15s;
     }
-    .match-row:last-child { border-bottom: none; }
-    .m-num   { color: rgba(242,235,221,.22); font-size: .62rem; }
-    .m-name  { color: rgba(242,235,221,.55); }
-    .m-name.vince { color: var(--cream); font-weight: 500; }
-    .m-score { font-variant-numeric: tabular-nums; font-size: .88rem; color: var(--cream); text-align: right; }
-    .m-score.w-gold  { color: var(--gold); }
-    .m-score.w-blue  { color: var(--blue); }
-    .m-score.l       { color: rgba(242,235,221,.3); }
-    .m-sep   { color: rgba(242,235,221,.18); font-size: .65rem; text-align: center; }
-    .m-badge { font-size: .58rem; padding: .12rem .42rem; border-radius: 3px; letter-spacing: .07em; text-align: center; }
-    .badge-g { background: rgba(200,168,75,.14); color: var(--gold); border: 1px solid rgba(200,168,75,.28); }
-    .badge-o { background: rgba(75,142,200,.14); color: var(--blue); border: 1px solid rgba(75,142,200,.28); }
-    .badge-oz { background: rgba(191,48,48,.12); color: #e07070; border: 1px solid rgba(191,48,48,.25); }
 
-    /* ── STATO ────────────────────────────────────────────────────────────── */
-    .stato {
-      border: 1px solid rgba(255,255,255,.07);
-      border-radius: var(--radius);
-      padding: 3rem 2rem;
-      text-align: center;
+    .match-row:last-child { border-bottom: none; }
+    .match-row:hover { background: rgba(255,255,255,.03); }
+
+    .m-num {
+      width: 20px; height: 20px; border-radius: 4px;
+      background: var(--bg3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .58rem; font-weight: 600; color: var(--text3);
     }
-    .stato-icon { font-size: 2.5rem; display: block; margin-bottom: .9rem; }
-    .stato-msg  { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 1.1rem; color: rgba(242,235,221,.45); }
-    .stato-sub  { font-size: .65rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(242,235,221,.22); margin-top: .5rem; }
-    .dot { display: inline-block; animation: blink 1.3s infinite; color: var(--gold); }
+
+    .m-name { font-weight: 500; color: var(--text2); }
+    .m-name.right { text-align: right; }
+    .m-name.vince { color: var(--text); font-weight: 600; }
+
+    .m-score { font-variant-numeric: tabular-nums; font-size: .82rem; font-weight: 700; text-align: center; }
+    .m-score.w-gin { color: var(--blue-hi); }
+    .m-score.w-opp { color: var(--orange-hi); }
+    .m-score.l { color: var(--text4); font-weight: 400; }
+    .m-dash { color: var(--text4); font-size: .6rem; text-align: center; }
+
+    .m-badge { font-size: .57rem; font-weight: 700; padding: .14rem .4rem; border-radius: 4px; text-align: center; }
+    .m-badge.bg-gin { background: var(--blue-dim); color: var(--blue-hi); }
+    .m-badge.bg-opp { background: var(--orange-dim); color: var(--orange-hi); }
+
+    /* ══ STATO ════════════════════════════════════════════════════════════ */
+    .stato {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 3.5rem 2rem; text-align: center;
+    }
+
+    .stato-icon { font-size: 2rem; display: block; margin-bottom: 1rem; }
+    .stato-msg  { font-size: .88rem; font-weight: 600; color: var(--text2); margin-bottom: .3rem; }
+    .stato-sub  { font-size: .68rem; color: var(--text3); }
+    .dot { display: inline-block; animation: blink 1.3s infinite; color: var(--blue-hi); }
     .dot:nth-child(2) { animation-delay: .2s; }
     .dot:nth-child(3) { animation-delay: .4s; }
 
-    /* ── FOOTER ──────────────────────────────────────────────────────────── */
+    /* ══ FOOTER ═══════════════════════════════════════════════════════════ */
     footer {
-      text-align: center;
-      padding: 1.5rem 1rem 2.5rem;
-      font-size: .6rem;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: rgba(242,235,221,.18);
+      border-top: 1px solid var(--border);
+      padding: 1.4rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 900px; margin: 0 auto;
     }
-    footer .f-suits { display: block; color: var(--gold); opacity: .3; font-size: .9rem; letter-spacing: .8rem; margin-bottom: .4rem; }
 
-    /* ── ANIMATIONS ──────────────────────────────────────────────────────── */
-    @keyframes fadeUp   { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes fadeSlide{ from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:translateX(0); } }
-    @keyframes blink    { 0%,80%,100% { opacity:.2; } 40% { opacity:1; } }
-    @keyframes spin     { to { transform:rotate(360deg); } }
+    .footer-brand { font-size: .7rem; font-weight: 600; color: var(--text3); }
+    .footer-suits { font-size: .85rem; letter-spacing: .5rem; color: var(--text4); }
+    .footer-src   { font-size: .64rem; color: var(--text3); }
 
-    /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
-    @media (max-width: 620px) {
-      .summary-grid { grid-template-columns: 1fr; }
-      .sb-wins { font-size: 2.5rem; }
-      .match-row { grid-template-columns: 1.2rem 1fr auto auto auto; }
-      .match-row .m-name:last-of-type, .match-row .m-badge { display: none; }
+    /* ══ ANIMATIONS ═══════════════════════════════════════════════════════ */
+    @keyframes fadeUp  { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn  { from { opacity:0; } to { opacity:1; } }
+    @keyframes blink   { 0%,80%,100%{opacity:.2;} 40%{opacity:1;} }
+    @keyframes spin    { to { transform:rotate(360deg); } }
+    @keyframes pulse-green { 0%,100%{box-shadow:0 0 4px var(--green);} 50%{box-shadow:0 0 10px var(--green);} }
+
+    /* ══ RESPONSIVE ═══════════════════════════════════════════════════════ */
+    @media (max-width: 640px) {
+      .stat-row { grid-template-columns: repeat(2, 1fr); }
+      .score-val { font-size: 2.8rem; }
+      .score-center { padding: 0 1.2rem; }
+      .giorno-head { grid-template-columns: 90px 1fr auto 30px; padding: .8rem .9rem; gap: .5rem; }
+      .g-player-lbl { min-width: 36px; font-size: .62rem; }
+      .match-row { grid-template-columns: 22px 1fr 50px 14px 50px 1fr 28px; padding: .5rem .8rem; }
+      footer { flex-direction: column; gap: .5rem; text-align: center; }
+      .nav-ts { display: none; }
+      .live-pill span:last-child { display: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="deco-suits">♠ ♥ ♦ ♣</div>
-  <h1>Burraco Battle<em>ginola700 · le sfide</em></h1>
-  <div class="ornament">
-    <div class="ornament-line"></div>
-    <div class="ornament-diamond">◆</div>
-    <div class="ornament-line"></div>
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="nav-brand">
+    <div class="nav-logo">B</div>
+    <div>
+      <div class="nav-title">Burraco Battle</div>
+      <div class="nav-sub">ginola700 · le sfide</div>
+    </div>
   </div>
-</header>
+  <div class="nav-right">
+    <div class="live-pill">
+      <div class="live-dot"></div>
+      <span>Live</span>
+    </div>
+    <span class="nav-ts" id="ts">—</span>
+    <button class="btn-refresh" id="btn-refresh" onclick="manualRefresh()">
+      <span class="spin" id="spin-icon">⟳</span>
+      Aggiorna
+    </button>
+  </div>
+</nav>
 
-<div class="update-bar">
-  Aggiornato: <b id="ts">—</b> &nbsp;·&nbsp; refresh automatico ogni ora
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">♠ Burraco · Head to Head</div>
+
+    <div class="scoreboard-wrap">
+      <div class="team-block">
+        <div class="team-avatar av-gin">G</div>
+        <div class="team-name">ginola700</div>
+        <div class="team-wr" id="hero-gin-wr">—</div>
+      </div>
+      <div class="score-center">
+        <div class="score-nums">
+          <span class="score-val tied" id="hero-gin-score">—</span>
+          <span class="score-sep">:</span>
+          <span class="score-val tied" id="hero-opp-score">—</span>
+        </div>
+        <div class="score-lbl">vittorie totali</div>
+      </div>
+      <div class="team-block right">
+        <div class="team-avatar av-opp" id="hero-opp-avatar">Z</div>
+        <div class="team-name" id="hero-opp-name">—</div>
+        <div class="team-wr" id="hero-opp-wr">—</div>
+      </div>
+    </div>
+
+    <div class="win-bar-wrap">
+      <div class="win-bar-labels">
+        <span class="wbl-gin" id="bar-lbl-gin">ginola700 — 0%</span>
+        <span class="wbl-opp" id="bar-lbl-opp">0%</span>
+      </div>
+      <div class="win-bar">
+        <div class="win-bar-fill" id="win-bar-fill" style="width:50%"></div>
+      </div>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-nav-btn active" id="tab-btn-zappaclaud" onclick="switchTab('zappaclaud')">vs zappaclaud</button>
+      <button class="tab-nav-btn" id="tab-btn-Giangi72" onclick="switchTab('Giangi72')">vs Giangi72</button>
+    </div>
+  </div>
 </div>
 
-<!-- REFRESH BUTTON -->
-<div class="refresh-wrap">
-  <button class="btn-refresh" id="btn-refresh" onclick="manualRefresh()">
-    <span class="spin" id="spin-icon">⟳</span>
-    Aggiorna dati
-  </button>
-</div>
+<!-- MAIN -->
+<div class="main">
 
-<!-- SINTESI DOPPIA -->
-<div class="wrap">
-  <div class="section-head">♠ Sintesi Generale</div>
-  <div class="summary-grid" id="summary-grid">
-    <div class="stato">
-      <span class="stato-icon"><span class="dot">•</span><span class="dot">•</span><span class="dot">•</span></span>
-      <p class="stato-msg">Caricamento...</p>
+  <div class="stat-row">
+    <div class="stat-pill">
+      <div class="sp-lbl">Partite</div>
+      <div class="sp-val" id="sp-partite">—</div>
+      <div class="sp-sub">totali giocate</div>
+    </div>
+    <div class="stat-pill">
+      <div class="sp-lbl">Sessioni</div>
+      <div class="sp-val" id="sp-giorni">—</div>
+      <div class="sp-sub">giorni giocati</div>
+    </div>
+    <div class="stat-pill">
+      <div class="sp-lbl">Win% gin</div>
+      <div class="sp-val" id="sp-gin-wr" style="color:var(--blue-hi)">—</div>
+      <div class="sp-sub">ginola700</div>
+    </div>
+    <div class="stat-pill">
+      <div class="sp-lbl">Win% opp</div>
+      <div class="sp-val" id="sp-opp-wr" style="color:var(--orange-hi)">—</div>
+      <div class="sp-sub" id="sp-opp-name">avversario</div>
     </div>
   </div>
 
-  <!-- DETTAGLIO PER GIORNO -->
-  <div class="section-head">♣ Riepilogo Giornaliero</div>
-  <div class="tab-bar" id="tab-bar">
-    <button class="tab-btn active-zappa" onclick="switchTab('zappaclaud')">vs zappaclaud</button>
-    <button class="tab-btn" onclick="switchTab('Giangi72')">vs Giangi72</button>
-  </div>
+  <div class="section-title">Riepilogo per giornata</div>
 
-  <div id="list-zappaclaud" class="list-zappa">
+  <div id="list-zappaclaud">
     <div class="stato">
       <span class="stato-icon"><span class="dot">•</span><span class="dot">•</span><span class="dot">•</span></span>
       <p class="stato-msg">Caricamento partite...</p>
+      <p class="stato-sub">lettura partite.json</p>
     </div>
   </div>
-  <div id="list-Giangi72" class="list-giangi" style="display:none">
+  <div id="list-Giangi72" style="display:none">
     <div class="stato">
       <span class="stato-icon"><span class="dot">•</span><span class="dot">•</span><span class="dot">•</span></span>
       <p class="stato-msg">Caricamento partite...</p>
+      <p class="stato-sub">lettura partite.json</p>
     </div>
   </div>
+
 </div>
 
-<!-- FOOTER -->
 <footer>
-  <span class="f-suits">♠ ♥ ♦ ♣</span>
-  dati da burracoepinelle.com · aggiornamento automatico via github actions
+  <div class="footer-brand">Burraco Battle · ginola700</div>
+  <div class="footer-suits">♠ ♥ ♦ ♣</div>
+  <div class="footer-src">burracoepinelle.com · github actions</div>
 </footer>
 
 <script>
 const P1 = 'ginola700';
 let currentTab = 'zappaclaud';
+let cachedData = null;
 
-/* ── TAB ────────────────────────────────────────────────────────────────── */
-function switchTab(opponent) {
-  currentTab = opponent;
-  // lista
+function switchTab(opp) {
+  currentTab = opp;
   document.querySelectorAll('[id^="list-"]').forEach(el => el.style.display = 'none');
-  document.getElementById('list-' + opponent).style.display = '';
-  // bottoni
-  const tabs = document.querySelectorAll('.tab-btn');
-  tabs[0].className = 'tab-btn' + (opponent === 'zappaclaud' ? ' active-zappa' : '');
-  tabs[1].className = 'tab-btn' + (opponent === 'Giangi72'   ? ' active-giangi' : '');
+  document.getElementById('list-' + opp).style.display = '';
+  document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-btn-' + opp).classList.add('active');
+  if (cachedData) updateHero(cachedData);
 }
 
-/* ── RENDER SINTESI ─────────────────────────────────────────────────────── */
-function renderSummary(data) {
-  const grid = document.getElementById('summary-grid');
-  grid.innerHTML = '';
+function updateHero(d) {
+  const av = d.avversari && d.avversari[currentTab];
+  if (!av) return;
+  const t = av.totali;
+  const gPct = t.totale_partite > 0 ? Math.round(t.ginola_vittorie / t.totale_partite * 100) : 50;
+  const oPct = 100 - gPct;
+  const gLeads = t.ginola_vittorie > t.opponent_vittorie;
+  const oLeads = t.opponent_vittorie > t.ginola_vittorie;
 
-  const opponents = [
-    { key: 'zappaclaud', cls: 'zappa',  accentCls: 'gold', badgeLabel: '♥ avversario 1' },
-    { key: 'Giangi72',   cls: 'giangi', accentCls: 'blue', badgeLabel: '♦ avversario 2' },
-  ];
+  const gEl = document.getElementById('hero-gin-score');
+  const oEl = document.getElementById('hero-opp-score');
+  gEl.textContent = t.ginola_vittorie;
+  oEl.textContent = t.opponent_vittorie;
+  gEl.className = 'score-val ' + (gLeads ? 'leader' : oLeads ? 'trailer' : 'tied');
+  oEl.className = 'score-val ' + (oLeads ? 'leader' : gLeads ? 'trailer' : 'tied');
 
-  opponents.forEach(opp => {
-    const av = data.avversari && data.avversari[opp.key];
-    if (!av) return;
-    const t = av.totali;
-    const gPct = t.totale_partite > 0 ? Math.round(t.ginola_vittorie / t.totale_partite * 100) : 50;
-    const oPct = 100 - gPct;
-    const ginoleads = t.ginola_vittorie > t.opponent_vittorie;
-    const oppLeads  = t.opponent_vittorie > t.ginola_vittorie;
+  document.getElementById('hero-gin-wr').textContent  = `Win rate ${gPct}%`;
+  document.getElementById('hero-opp-wr').textContent  = `Win rate ${oPct}%`;
+  document.getElementById('hero-opp-name').textContent = currentTab;
+  document.getElementById('hero-opp-avatar').textContent = currentTab.charAt(0).toUpperCase();
 
-    const card = document.createElement('div');
-    card.className = `summary-card ${opp.cls}`;
-    card.innerHTML = `
-      <div class="sc-header">
-        <div class="sc-title">vs ${opp.key}</div>
-        <div class="sc-badge">${opp.badgeLabel}</div>
-      </div>
-      <div class="sc-body">
-        <div class="sb-row">
-          <div class="sb-player">
-            <div class="sb-nick">ginola700</div>
-            <div class="sb-wins ${ginoleads ? opp.accentCls : oppLeads ? 'dim' : 'cream'}">
-              ${t.ginola_vittorie}
-            </div>
-            ${ginoleads ? '<span class="crown">♛</span>' : ''}
-          </div>
-          <div class="sb-vs">vs</div>
-          <div class="sb-player right">
-            <div class="sb-nick">${opp.key}</div>
-            <div class="sb-wins ${oppLeads ? opp.accentCls : ginoleads ? 'dim' : 'cream'}">
-              ${t.opponent_vittorie}
-            </div>
-            ${oppLeads ? '<span class="crown" style="text-align:right">♛</span>' : ''}
-          </div>
-        </div>
-        <div class="pb-wrap">
-          <div class="pb-labels">
-            <span>gin ${gPct}%</span>
-            <span>${oPct}% ${opp.key.substring(0,4)}</span>
-          </div>
-          <div class="pb-bar"><div class="pb-fill" style="width:${gPct}%"></div></div>
-        </div>
-        <div class="sc-meta">
-          <b>${t.totale_partite}</b> partite totali &nbsp;·&nbsp;
-          <b>${t.giorni_giocati}</b> giorni giocati
-        </div>
-      </div>`;
-    grid.appendChild(card);
-  });
+  document.getElementById('win-bar-fill').style.width = gPct + '%';
+  document.getElementById('bar-lbl-gin').textContent = `ginola700 — ${gPct}%`;
+  document.getElementById('bar-lbl-opp').textContent = `${oPct}% — ${currentTab}`;
+
+  document.getElementById('sp-partite').textContent = t.totale_partite;
+  document.getElementById('sp-giorni').textContent  = t.giorni_giocati;
+  document.getElementById('sp-gin-wr').textContent  = gPct + '%';
+  document.getElementById('sp-opp-wr').textContent  = oPct + '%';
+  document.getElementById('sp-opp-name').textContent = currentTab;
 }
 
-/* ── RENDER LISTA GIORNI ────────────────────────────────────────────────── */
-function renderDays(perGiorno, containerId, oppKey, colorCls) {
+function renderDays(perGiorno, containerId, oppKey) {
   const list = document.getElementById(containerId);
   if (!perGiorno || perGiorno.length === 0) {
     list.innerHTML = `<div class="stato">
       <span class="stato-icon">🃏</span>
       <p class="stato-msg">Nessuna partita trovata</p>
-      <p class="stato-sub">Nessuna partita registrata vs ${oppKey}</p>
+      <p class="stato-sub">vs ${oppKey}</p>
     </div>`;
     return;
   }
-
-  const isGold = colorCls === 'gold';
-  const winCls  = isGold ? 'w-gold' : 'w-blue';
-  const hiCls   = isGold ? 'hi-gold' : 'hi-blue';
-  const oppInit = oppKey.substring(0, 3).toUpperCase();
 
   list.innerHTML = '';
   perGiorno.forEach((g, idx) => {
@@ -588,31 +585,52 @@ function renderDays(perGiorno, containerId, oppKey, colorCls) {
     card.className = 'giorno';
     card.style.animationDelay = (idx * 0.04) + 's';
 
+    let weekday = '';
+    try {
+      const parts = g.data.split('/');
+      if (parts.length === 3) {
+        const dt = new Date(+parts[2], +parts[1]-1, +parts[0]);
+        weekday = dt.toLocaleDateString('it-IT', {weekday:'short'}).replace('.','').toUpperCase();
+      }
+    } catch(e) {}
+
     const matchRows = (g.partite || []).map((p, i) => {
       const gw = p.winner === P1;
       return `<div class="match-row">
         <span class="m-num">${i+1}</span>
         <span class="m-name ${gw ? 'vince' : ''}">${P1}</span>
-        <span class="m-score ${gw ? winCls : 'l'}">${p.ginola_score}</span>
-        <span class="m-sep">—</span>
-        <span class="m-score ${!gw ? winCls : 'l'}">${p.opponent_score}</span>
-        <span class="m-name ${!gw ? 'vince' : ''}">${oppKey}</span>
-        <span class="m-badge ${gw ? 'badge-g' : (isGold ? 'badge-oz' : 'badge-o')}">${gw ? 'G' : oppInit}</span>
+        <span class="m-score ${gw ? 'w-gin' : 'l'}">${p.ginola_score}</span>
+        <span class="m-dash">–</span>
+        <span class="m-score ${!gw ? 'w-opp' : 'l'}">${p.opponent_score}</span>
+        <span class="m-name right ${!gw ? 'vince' : ''}">${oppKey}</span>
+        <span class="m-badge ${gw ? 'bg-gin' : 'bg-opp'}">${gw ? 'GIN' : oppKey.substring(0,3).toUpperCase()}</span>
       </div>`;
     }).join('');
 
+    const badge = gWin
+      ? `<span class="g-winner-badge gin">ginola700</span>`
+      : oWin
+      ? `<span class="g-winner-badge opp">${oppKey}</span>`
+      : `<span class="g-winner-badge par">—</span>`;
+
     card.innerHTML = `
       <div class="giorno-head" onclick="toggle(this)">
-        <div class="g-date">${g.data}</div>
-        <div class="g-score-row">
-          <span class="g-player">gin</span>
-          <span class="g-n ${gWin ? hiCls : oWin ? 'lo' : ''}">${gV}</span>
-          <span class="g-dash">—</span>
-          <span class="g-n ${oWin ? hiCls : gWin ? 'lo' : ''}">${oV}</span>
-          <span class="g-player">${oppKey.substring(0,4)}</span>
+        <div class="g-date-blk">
+          <div class="g-date">${g.data}</div>
+          <div class="g-weekday">${weekday}</div>
         </div>
-        <div class="g-meta">${n} partite</div>
-        <span class="g-arrow">▼</span>
+        <div class="g-score-row">
+          <span class="g-player-lbl">gin</span>
+          <span class="g-score-big ${gWin?'win':oWin?'lose':'tie'}">${gV}</span>
+          <span class="g-dash">–</span>
+          <span class="g-score-big ${oWin?'win':gWin?'lose':'tie'}">${oV}</span>
+          <span class="g-player-lbl">${oppKey.substring(0,4)}</span>
+        </div>
+        <div class="g-meta-blk">
+          ${badge}
+          <span class="g-partite">${n} partite</span>
+        </div>
+        <span class="g-chevron">▼</span>
       </div>
       <div class="giorno-body">
         ${matchRows ? '<div class="match-list">' + matchRows + '</div>' : ''}
@@ -625,27 +643,22 @@ function toggle(head) {
   head.closest('.giorno').classList.toggle('open');
 }
 
-/* ── RENDER PRINCIPALE ──────────────────────────────────────────────────── */
 function renderData(d) {
-  // timestamp
+  cachedData = d;
   if (d.aggiornato) {
     const dt = new Date(d.aggiornato);
     document.getElementById('ts').textContent =
-      dt.toLocaleDateString('it-IT') + ' · ' +
-      dt.toLocaleTimeString('it-IT', {hour:'2-digit', minute:'2-digit'}) + ' UTC' +
-      (d._demo ? '  ⚠ dati demo' : '');
+      dt.toLocaleDateString('it-IT') + ' ' +
+      dt.toLocaleTimeString('it-IT', {hour:'2-digit', minute:'2-digit'}) +
+      (d._demo ? ' ⚠ demo' : '');
   }
-
-  renderSummary(d);
-
-  // Liste giornaliere per ciascun avversario
+  updateHero(d);
   const opp1 = d.avversari && d.avversari['zappaclaud'];
   const opp2 = d.avversari && d.avversari['Giangi72'];
-  if (opp1) renderDays(opp1.per_giorno, 'list-zappaclaud', 'zappaclaud', 'gold');
-  if (opp2) renderDays(opp2.per_giorno, 'list-Giangi72',   'Giangi72',   'blue');
+  if (opp1) renderDays(opp1.per_giorno, 'list-zappaclaud', 'zappaclaud');
+  if (opp2) renderDays(opp2.per_giorno, 'list-Giangi72',   'Giangi72');
 }
 
-/* ── DEMO DATA ──────────────────────────────────────────────────────────── */
 function demo() {
   return {
     aggiornato: new Date().toISOString(), _demo: true,
@@ -666,6 +679,13 @@ function demo() {
               {ginola_score:290,opponent_score:430,winner:'zappaclaud'},
               {ginola_score:510,opponent_score:360,winner:P1},
               {ginola_score:270,opponent_score:400,winner:'zappaclaud'}] },
+          { data:'12/02/2025', ginola_vittorie:4, opponent_vittorie:2, n_partite:6, partite:[
+              {ginola_score:680,opponent_score:420,winner:P1},
+              {ginola_score:350,opponent_score:510,winner:'zappaclaud'},
+              {ginola_score:590,opponent_score:440,winner:P1},
+              {ginola_score:710,opponent_score:390,winner:P1},
+              {ginola_score:280,opponent_score:470,winner:'zappaclaud'},
+              {ginola_score:440,opponent_score:300,winner:P1}] }
         ]
       },
       Giangi72: {
@@ -679,14 +699,13 @@ function demo() {
           { data:'10/02/2025', ginola_vittorie:1, opponent_vittorie:2, n_partite:3, partite:[
               {ginola_score:280,opponent_score:470,winner:'Giangi72'},
               {ginola_score:440,opponent_score:300,winner:P1},
-              {ginola_score:310,opponent_score:490,winner:'Giangi72'}] },
+              {ginola_score:310,opponent_score:490,winner:'Giangi72'}] }
         ]
       }
     }
   };
 }
 
-/* ── FETCH ──────────────────────────────────────────────────────────────── */
 async function load() {
   try {
     const r = await fetch('partite.json?_=' + Date.now());
@@ -694,14 +713,12 @@ async function load() {
     renderData(await r.json());
   } catch {
     renderData(demo());
-    document.getElementById('ts').textContent += '  — ⚠ partite.json non trovato, mostro dati demo';
   }
 }
 
 load();
 setInterval(load, 60 * 60 * 1000);
 
-/* ── REFRESH MANUALE ────────────────────────────────────────────────────── */
 const GITHUB_REPO  = "ginola70-footgolf/StatisticheBurraco";
 const GITHUB_TOKEN = "";
 
@@ -717,18 +734,15 @@ async function manualRefresh() {
     try {
       const resp = await fetch(
         `https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/update.yml/dispatches`,
-        { method:'POST', headers:{ 'Authorization':`Bearer ${GITHUB_TOKEN}`, 'Accept':'application/vnd.github+json', 'Content-Type':'application/json' }, body: JSON.stringify({ref:'main'}) }
+        { method:'POST', headers:{'Authorization':`Bearer ${GITHUB_TOKEN}`,'Accept':'application/vnd.github+json','Content-Type':'application/json'}, body: JSON.stringify({ref:'main'}) }
       );
       if (resp.ok || resp.status === 204) {
-        btn.textContent = '';
-        btn.appendChild(icon);
-        btn.append(' Action avviata! Attendi ~30s…');
+        btn.textContent = ''; btn.appendChild(icon); btn.append(' Action avviata!');
         setTimeout(() => { load(); resetBtn(); }, 35000);
         return;
       }
-    } catch(e) { console.warn('GitHub dispatch fallito:', e); }
+    } catch(e) {}
   }
-
   await load();
   resetBtn();
 }
@@ -737,9 +751,7 @@ function resetBtn() {
   const btn  = document.getElementById('btn-refresh');
   const icon = document.getElementById('spin-icon');
   btn.classList.remove('loading');
-  btn.textContent = '';
-  btn.appendChild(icon);
-  btn.append(' Aggiorna dati');
+  btn.textContent = ''; btn.appendChild(icon); btn.append(' Aggiorna');
 }
 </script>
 </body>
