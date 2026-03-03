@@ -1,18 +1,44 @@
 {
-  "aggiornato": "2026-03-02T01:00:51.295598+00:00",
+  "aggiornato": "2026-03-03T01:02:23.878994+00:00",
   "player1": "ginola700",
   "avversari": {
     "zappaclaud": {
       "avversario": "zappaclaud",
       "totali": {
-        "ginola_vittorie": 29,
+        "ginola_vittorie": 32,
         "opponent_vittorie": 24,
-        "totale_partite": 53,
-        "giorni_giocati": 21,
-        "ginola_pct": 54.7,
-        "opponent_pct": 45.3
+        "totale_partite": 56,
+        "giorni_giocati": 22,
+        "ginola_pct": 57.1,
+        "opponent_pct": 42.9
       },
       "per_giorno": [
+        {
+          "data": "02/03/2026",
+          "ginola_vittorie": 3,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2205,
+              "opponent_score": 1940,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2515,
+              "opponent_score": 1410,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2240,
+              "opponent_score": 1290,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 3
+        },
         {
           "data": "25/02/2026",
           "ginola_vittorie": 1,
