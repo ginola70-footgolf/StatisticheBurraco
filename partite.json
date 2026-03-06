@@ -1,18 +1,32 @@
 {
-  "aggiornato": "2026-03-05T01:01:19.015914+00:00",
+  "aggiornato": "2026-03-06T01:05:49.015313+00:00",
   "player1": "ginola700",
   "avversari": {
     "zappaclaud": {
       "avversario": "zappaclaud",
       "totali": {
         "ginola_vittorie": 34,
-        "opponent_vittorie": 25,
-        "totale_partite": 59,
-        "giorni_giocati": 23,
-        "ginola_pct": 57.6,
-        "opponent_pct": 42.4
+        "opponent_vittorie": 26,
+        "totale_partite": 60,
+        "giorni_giocati": 24,
+        "ginola_pct": 56.7,
+        "opponent_pct": 43.3
       },
       "per_giorno": [
+        {
+          "data": "05/03/2026",
+          "ginola_vittorie": 0,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 1960,
+              "opponent_score": 2435,
+              "winner": "zappaclaud",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 1
+        },
         {
           "data": "04/03/2026",
           "ginola_vittorie": 2,
@@ -557,13 +571,33 @@
       "avversario": "Giangi72",
       "totali": {
         "ginola_vittorie": 13,
-        "opponent_vittorie": 10,
-        "totale_partite": 23,
-        "giorni_giocati": 13,
-        "ginola_pct": 56.5,
-        "opponent_pct": 43.5
+        "opponent_vittorie": 12,
+        "totale_partite": 25,
+        "giorni_giocati": 14,
+        "ginola_pct": 52.0,
+        "opponent_pct": 48.0
       },
       "per_giorno": [
+        {
+          "data": "05/03/2026",
+          "ginola_vittorie": 0,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 1085,
+              "opponent_score": 2220,
+              "winner": "Giangi72",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 1565,
+              "opponent_score": 2095,
+              "winner": "Giangi72",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 2
+        },
         {
           "data": "03/03/2026",
           "ginola_vittorie": 1,
