@@ -1,18 +1,44 @@
 {
-  "aggiornato": "2026-03-16T01:09:30.636422+00:00",
+  "aggiornato": "2026-03-17T01:01:39.688547+00:00",
   "player1": "ginola700",
   "avversari": {
     "zappaclaud": {
       "avversario": "zappaclaud",
       "totali": {
-        "ginola_vittorie": 50,
+        "ginola_vittorie": 53,
         "opponent_vittorie": 32,
-        "totale_partite": 82,
-        "giorni_giocati": 33,
-        "ginola_pct": 61.0,
-        "opponent_pct": 39.0
+        "totale_partite": 85,
+        "giorni_giocati": 34,
+        "ginola_pct": 62.4,
+        "opponent_pct": 37.6
       },
       "per_giorno": [
+        {
+          "data": "16/03/2026",
+          "ginola_vittorie": 3,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2235,
+              "opponent_score": 1270,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2500,
+              "opponent_score": 1435,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2290,
+              "opponent_score": 1205,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 3
+        },
         {
           "data": "15/03/2026",
           "ginola_vittorie": 1,
@@ -774,14 +800,28 @@
     "Giangi72": {
       "avversario": "Giangi72",
       "totali": {
-        "ginola_vittorie": 28,
+        "ginola_vittorie": 29,
         "opponent_vittorie": 16,
-        "totale_partite": 44,
-        "giorni_giocati": 20,
-        "ginola_pct": 63.6,
-        "opponent_pct": 36.4
+        "totale_partite": 45,
+        "giorni_giocati": 21,
+        "ginola_pct": 64.4,
+        "opponent_pct": 35.6
       },
       "per_giorno": [
+        {
+          "data": "16/03/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2535,
+              "opponent_score": 1675,
+              "winner": "ginola700",
+              "tipo": "abbandono"
+            }
+          ],
+          "n_partite": 1
+        },
         {
           "data": "13/03/2026",
           "ginola_vittorie": 2,
