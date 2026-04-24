@@ -1,18 +1,44 @@
 {
-  "aggiornato": "2026-04-23T01:20:23.262460+00:00",
+  "aggiornato": "2026-04-24T01:19:40.364958+00:00",
   "player1": "ginola700",
   "avversari": {
     "zappaclaud": {
       "avversario": "zappaclaud",
       "totali": {
-        "ginola_vittorie": 106,
+        "ginola_vittorie": 109,
         "opponent_vittorie": 50,
-        "totale_partite": 156,
-        "giorni_giocati": 59,
-        "ginola_pct": 67.9,
-        "opponent_pct": 32.1
+        "totale_partite": 159,
+        "giorni_giocati": 60,
+        "ginola_pct": 68.6,
+        "opponent_pct": 31.4
       },
       "per_giorno": [
+        {
+          "data": "23/04/2026",
+          "ginola_vittorie": 3,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2045,
+              "opponent_score": 365,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2650,
+              "opponent_score": 1615,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2305,
+              "opponent_score": 1615,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 3
+        },
         {
           "data": "22/04/2026",
           "ginola_vittorie": 0,
@@ -1426,14 +1452,54 @@
     "Giangi72": {
       "avversario": "Giangi72",
       "totali": {
-        "ginola_vittorie": 90,
-        "opponent_vittorie": 49,
-        "totale_partite": 139,
-        "giorni_giocati": 46,
-        "ginola_pct": 64.7,
-        "opponent_pct": 35.3
+        "ginola_vittorie": 91,
+        "opponent_vittorie": 52,
+        "totale_partite": 143,
+        "giorni_giocati": 48,
+        "ginola_pct": 63.6,
+        "opponent_pct": 36.4
       },
       "per_giorno": [
+        {
+          "data": "24/04/2026",
+          "ginola_vittorie": 0,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2015,
+              "opponent_score": 2215,
+              "winner": "Giangi72",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 1
+        },
+        {
+          "data": "23/04/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 1840,
+              "opponent_score": 2120,
+              "winner": "Giangi72",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2025,
+              "opponent_score": 1070,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 900,
+              "opponent_score": 2045,
+              "winner": "Giangi72",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 3
+        },
         {
           "data": "22/04/2026",
           "ginola_vittorie": 2,
