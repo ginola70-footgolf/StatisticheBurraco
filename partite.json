@@ -1,18 +1,32 @@
 {
-  "aggiornato": "2026-05-14T01:53:32.816525+00:00",
+  "aggiornato": "2026-05-15T01:51:18.675678+00:00",
   "player1": "ginola700",
   "avversari": {
     "zappaclaud": {
       "avversario": "zappaclaud",
       "totali": {
-        "ginola_vittorie": 121,
+        "ginola_vittorie": 122,
         "opponent_vittorie": 48,
-        "totale_partite": 169,
-        "giorni_giocati": 63,
-        "ginola_pct": 71.6,
-        "opponent_pct": 28.4
+        "totale_partite": 170,
+        "giorni_giocati": 64,
+        "ginola_pct": 71.8,
+        "opponent_pct": 28.2
       },
       "per_giorno": [
+        {
+          "data": "14/05/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2600,
+              "opponent_score": 1355,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 1
+        },
         {
           "data": "13/05/2026",
           "ginola_vittorie": 1,
@@ -1536,14 +1550,34 @@
     "Giangi72": {
       "avversario": "Giangi72",
       "totali": {
-        "ginola_vittorie": 110,
+        "ginola_vittorie": 112,
         "opponent_vittorie": 67,
-        "totale_partite": 177,
-        "giorni_giocati": 59,
-        "ginola_pct": 62.1,
-        "opponent_pct": 37.9
+        "totale_partite": 179,
+        "giorni_giocati": 60,
+        "ginola_pct": 62.6,
+        "opponent_pct": 37.4
       },
       "per_giorno": [
+        {
+          "data": "14/05/2026",
+          "ginola_vittorie": 2,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2380,
+              "opponent_score": 2235,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2455,
+              "opponent_score": 1715,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 2
+        },
         {
           "data": "13/05/2026",
           "ginola_vittorie": 2,
