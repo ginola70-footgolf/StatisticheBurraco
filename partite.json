@@ -1,18 +1,32 @@
 {
-  "aggiornato": "2026-07-14T01:11:28.048909+00:00",
+  "aggiornato": "2026-07-15T01:08:35.230368+00:00",
   "player1": "ginola700",
   "avversari": {
     "zappaclaud": {
       "avversario": "zappaclaud",
       "totali": {
-        "ginola_vittorie": 122,
+        "ginola_vittorie": 123,
         "opponent_vittorie": 55,
-        "totale_partite": 177,
-        "giorni_giocati": 63,
-        "ginola_pct": 68.9,
-        "opponent_pct": 31.1
+        "totale_partite": 178,
+        "giorni_giocati": 64,
+        "ginola_pct": 69.1,
+        "opponent_pct": 30.9
       },
       "per_giorno": [
+        {
+          "data": "14/07/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2325,
+              "opponent_score": 1900,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 1
+        },
         {
           "data": "10/07/2026",
           "ginola_vittorie": 3,
@@ -1585,13 +1599,33 @@
       "avversario": "Giangi72",
       "totali": {
         "ginola_vittorie": 81,
-        "opponent_vittorie": 46,
-        "totale_partite": 127,
-        "giorni_giocati": 51,
-        "ginola_pct": 63.8,
-        "opponent_pct": 36.2
+        "opponent_vittorie": 48,
+        "totale_partite": 129,
+        "giorni_giocati": 52,
+        "ginola_pct": 62.8,
+        "opponent_pct": 37.2
       },
       "per_giorno": [
+        {
+          "data": "14/07/2026",
+          "ginola_vittorie": 0,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 2125,
+              "opponent_score": 2510,
+              "winner": "Giangi72",
+              "tipo": "abbandono"
+            },
+            {
+              "ginola_score": 530,
+              "opponent_score": 2080,
+              "winner": "Giangi72",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 2
+        },
         {
           "data": "09/07/2026",
           "ginola_vittorie": 1,
