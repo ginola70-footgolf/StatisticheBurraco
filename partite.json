@@ -1,5 +1,5 @@
 {
-  "aggiornato": "2026-10-20T02:18:40.537153+00:00",
+  "aggiornato": "2026-10-21T02:12:00.510622+00:00",
   "player1": "ginola700",
   "avversari": {
     "zappaclaud": {
@@ -1034,14 +1034,64 @@
     "Giangi72": {
       "avversario": "Giangi72",
       "totali": {
-        "ginola_vittorie": 94,
-        "opponent_vittorie": 53,
-        "totale_partite": 147,
-        "giorni_giocati": 58,
-        "ginola_pct": 63.9,
-        "opponent_pct": 36.1
+        "ginola_vittorie": 100,
+        "opponent_vittorie": 54,
+        "totale_partite": 154,
+        "giorni_giocati": 59,
+        "ginola_pct": 64.9,
+        "opponent_pct": 35.1
       },
       "per_giorno": [
+        {
+          "data": "20/10/2026",
+          "ginola_vittorie": 6,
+          "opponent_vittorie": 1,
+          "partite": [
+            {
+              "ginola_score": 2135,
+              "opponent_score": 1860,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2425,
+              "opponent_score": 1365,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 1275,
+              "opponent_score": 2130,
+              "winner": "Giangi72",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2035,
+              "opponent_score": 1640,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2295,
+              "opponent_score": 2150,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 3000,
+              "opponent_score": 1210,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2020,
+              "opponent_score": 1945,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 7
+        },
         {
           "data": "19/10/2026",
           "ginola_vittorie": 0,
