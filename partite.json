@@ -1,16 +1,16 @@
 {
-  "aggiornato": "2026-11-11T03:22:47.312751+00:00",
+  "aggiornato": "2026-11-12T04:32:49.858508+00:00",
   "player1": "ginola700",
   "avversari": {
     "zappaclaud": {
       "avversario": "zappaclaud",
       "totali": {
         "ginola_vittorie": 47,
-        "opponent_vittorie": 38,
-        "totale_partite": 85,
-        "giorni_giocati": 30,
-        "ginola_pct": 55.3,
-        "opponent_pct": 44.7
+        "opponent_vittorie": 36,
+        "totale_partite": 83,
+        "giorni_giocati": 28,
+        "ginola_pct": 56.6,
+        "opponent_pct": 43.4
       },
       "per_giorno": [
         {
@@ -734,48 +734,46 @@
             }
           ],
           "n_partite": 2
-        },
-        {
-          "data": "12/08/2026",
-          "ginola_vittorie": 0,
-          "opponent_vittorie": 1,
-          "partite": [
-            {
-              "ginola_score": 1650,
-              "opponent_score": 2235,
-              "winner": "zappaclaud",
-              "tipo": "abbandono"
-            }
-          ],
-          "n_partite": 1
-        },
-        {
-          "data": "07/08/2026",
-          "ginola_vittorie": 0,
-          "opponent_vittorie": 1,
-          "partite": [
-            {
-              "ginola_score": 1340,
-              "opponent_score": 2010,
-              "winner": "zappaclaud",
-              "tipo": "finepartita"
-            }
-          ],
-          "n_partite": 1
         }
       ]
     },
     "Giangi72": {
       "avversario": "Giangi72",
       "totali": {
-        "ginola_vittorie": 95,
-        "opponent_vittorie": 56,
-        "totale_partite": 151,
-        "giorni_giocati": 58,
-        "ginola_pct": 62.9,
-        "opponent_pct": 37.1
+        "ginola_vittorie": 89,
+        "opponent_vittorie": 52,
+        "totale_partite": 141,
+        "giorni_giocati": 54,
+        "ginola_pct": 63.1,
+        "opponent_pct": 36.9
       },
       "per_giorno": [
+        {
+          "data": "11/11/2026",
+          "ginola_vittorie": 3,
+          "opponent_vittorie": 0,
+          "partite": [
+            {
+              "ginola_score": 2420,
+              "opponent_score": 760,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2300,
+              "opponent_score": 1090,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2325,
+              "opponent_score": 2010,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 3
+        },
         {
           "data": "10/11/2026",
           "ginola_vittorie": 0,
@@ -2024,124 +2022,6 @@
               "opponent_score": 15,
               "winner": "ginola700",
               "tipo": "abbandono"
-            }
-          ],
-          "n_partite": 3
-        },
-        {
-          "data": "12/08/2026",
-          "ginola_vittorie": 2,
-          "opponent_vittorie": 0,
-          "partite": [
-            {
-              "ginola_score": 2105,
-              "opponent_score": 1910,
-              "winner": "ginola700",
-              "tipo": "finepartita"
-            },
-            {
-              "ginola_score": 2075,
-              "opponent_score": 1655,
-              "winner": "ginola700",
-              "tipo": "finepartita"
-            }
-          ],
-          "n_partite": 2
-        },
-        {
-          "data": "09/08/2026",
-          "ginola_vittorie": 0,
-          "opponent_vittorie": 1,
-          "partite": [
-            {
-              "ginola_score": 1510,
-              "opponent_score": 2295,
-              "winner": "Giangi72",
-              "tipo": "finepartita"
-            }
-          ],
-          "n_partite": 1
-        },
-        {
-          "data": "08/08/2026",
-          "ginola_vittorie": 5,
-          "opponent_vittorie": 0,
-          "partite": [
-            {
-              "ginola_score": 1530,
-              "opponent_score": 165,
-              "winner": "ginola700",
-              "tipo": "abbandono"
-            },
-            {
-              "ginola_score": 1940,
-              "opponent_score": 235,
-              "winner": "ginola700",
-              "tipo": "abbandono"
-            },
-            {
-              "ginola_score": 2290,
-              "opponent_score": 1080,
-              "winner": "ginola700",
-              "tipo": "finepartita"
-            },
-            {
-              "ginola_score": 2605,
-              "opponent_score": 830,
-              "winner": "ginola700",
-              "tipo": "finepartita"
-            },
-            {
-              "ginola_score": 2525,
-              "opponent_score": 1545,
-              "winner": "ginola700",
-              "tipo": "finepartita"
-            }
-          ],
-          "n_partite": 5
-        },
-        {
-          "data": "07/08/2026",
-          "ginola_vittorie": 0,
-          "opponent_vittorie": 2,
-          "partite": [
-            {
-              "ginola_score": 1015,
-              "opponent_score": 2515,
-              "winner": "Giangi72",
-              "tipo": "finepartita"
-            },
-            {
-              "ginola_score": 1680,
-              "opponent_score": 2040,
-              "winner": "Giangi72",
-              "tipo": "finepartita"
-            }
-          ],
-          "n_partite": 2
-        },
-        {
-          "data": "06/08/2026",
-          "ginola_vittorie": 2,
-          "opponent_vittorie": 1,
-          "partite": [
-            {
-              "ginola_score": 2035,
-              "opponent_score": 1305,
-              "winner": "ginola700",
-              "tipo": "finepartita"
-            },
-            {
-              "ginola_score": 2330,
-              "opponent_score": 1465,
-              "winner": "ginola700",
-              "tipo": "finepartita"
-            },
-            {
-              "ginola_score": 1440,
-              "opponent_score": 2160,
-              "winner": "Giangi72",
-              "tipo": "finepartita"
             }
           ],
           "n_partite": 3
