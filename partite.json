@@ -1,5 +1,5 @@
 {
-  "aggiornato": "2026-11-23T04:17:54.257315+00:00",
+  "aggiornato": "2026-11-24T07:15:21.897964+00:00",
   "player1": "ginola700",
   "avversari": {
     "zappaclaud": {
@@ -662,14 +662,40 @@
     "Giangi72": {
       "avversario": "Giangi72",
       "totali": {
-        "ginola_vittorie": 86,
-        "opponent_vittorie": 51,
-        "totale_partite": 137,
-        "giorni_giocati": 56,
-        "ginola_pct": 62.8,
-        "opponent_pct": 37.2
+        "ginola_vittorie": 87,
+        "opponent_vittorie": 53,
+        "totale_partite": 140,
+        "giorni_giocati": 57,
+        "ginola_pct": 62.1,
+        "opponent_pct": 37.9
       },
       "per_giorno": [
+        {
+          "data": "23/11/2026",
+          "ginola_vittorie": 1,
+          "opponent_vittorie": 2,
+          "partite": [
+            {
+              "ginola_score": 1205,
+              "opponent_score": 2085,
+              "winner": "Giangi72",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 1265,
+              "opponent_score": 2215,
+              "winner": "Giangi72",
+              "tipo": "finepartita"
+            },
+            {
+              "ginola_score": 2205,
+              "opponent_score": 1495,
+              "winner": "ginola700",
+              "tipo": "finepartita"
+            }
+          ],
+          "n_partite": 3
+        },
         {
           "data": "22/11/2026",
           "ginola_vittorie": 1,
